@@ -1,0 +1,128 @@
+openapi: 3.0.0
+info:
+  title: Estimations
+  version: 3.0.2
+paths:
+  /estimationsPost/{collectionID}/{postID}/{criterion}/{userID}:
+   get:
+      tags: 
+        - "Evaluation"
+      summary: "Post evaluation"
+      description: "Getting a post rating from a user"
+      parameters:
+      - name: "collectionID"
+        in: "path"
+        description: "ID collection"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "postID"
+        in: "path"
+        description: "ID post"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "criterion"
+        in: "path"
+        description: "Name of the criterion"
+        required: true
+        schema:
+          type: "string"
+      - name: "userID"
+        in: "path"
+        description: "User ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  estimation:
+                    type: "integer"
+                    format: "int64"
+        404:
+          description: "Parameter error"
+          
+  /averageByCriterion/{collectionID}/{postID}/{criterion}:
+    get:
+      tags: 
+        - "Average criterion"
+      summary: "Average mark"
+      description: "Average rating by criterion"
+      parameters:
+      - name: "collectionID"
+        in: "path"
+        description: "ID collection"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "postID"
+        in: "path"
+        description: "ID post"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "criterion"
+        in: "path"
+        description: "Name of the criterion"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  estimation:
+                    type: "integer"
+                    format: "int64"
+        404:
+          description: "Parameter error"
+  
+  /average/{collectionID}/{postID}:
+    get:
+      tags: 
+        - "Average"
+      summary: "Average mark"
+      description: "Average rating"
+      parameters:
+      - name: "collectionID"
+        in: "path"
+        description: "ID collection"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "postID"
+        in: "path"
+        description: "ID post"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  estimation:
+                    type: "integer"
+                    format: "int64"
+        404:
+          description: "Error"
