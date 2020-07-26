@@ -57,7 +57,7 @@ paths:
       tags:
         - "Collections"
       summary: "Edit collection data"
-      description: "Edit token, description"
+      description: "Edit name, description, criterion list"
       requestBody:
         required: true
         content:
@@ -80,16 +80,15 @@ paths:
                     type: "string"
                     format: "string"
             example:
+              token: "f57ebe597a3741b688269209fa29b053"
               name: "Чайники"
               description: "Сравнение моих чайников"
-              token: "f57ebe597a3741b688269209fa29b053"
-              firstPostId: "322"
               criterion: ["Качество", "Цена", "Внешний вид"]
       responses:
         200:
           description: "OK"
-        404:
-          description: "Incorrect data"
+        403:
+          description: "Not enough rights to create the collection"
           
       
   
@@ -98,7 +97,7 @@ paths:
         tags: 
           - "Collections"
         summary: "Add post to collection"
-        description: "Add post to collection"
+        description: ""
         requestBody:
           required: true
           content:
@@ -106,17 +105,17 @@ paths:
               schema:
                 type: "object"
                 properties:
+                  token:
+                    type: "string"
                   collectionId:
                     type: "integer"
                     format: "int64"
                   postId:
                     type: "string"
-                  token:
-                    type: "string"
               example:
+                token: "f57ebe597a3741b688269209fa29b053"
                 collectionId: 1445
                 postId: "333"
-                token: "f57ebe597a3741b688269209fa29b053"
         responses:
           200:
             description: "OK"
@@ -125,12 +124,12 @@ paths:
             description: "Not enough rights to add a post to the collection"
             content: {}
   
-  /collections/posts/{collectionId}:
+  /collections/{collectionId}/posts:
       get:
         tags: 
           - "Collections"
-        summary: "Get a list of post ids in a collection"
-        description: "Get a list of post ids in a collection"
+        summary: "Get a list of post IDs in a collection"
+        description: ""
         parameters:
         - name: "collectionId"
           in: "path"
@@ -153,8 +152,11 @@ paths:
                         format: "string"
                 example:
                   posts: ["322", "333", "5", "4692"]
+          
+          404:
+            description: "Not found"
                   
-  /collections/{token}/{collectionId}:
+  /collections/{collectionId}/{token}:
       get:
         tags: 
         - "Collections"
@@ -202,15 +204,19 @@ paths:
                   posts: ["322", "777"]
                   criterion: ["Качество", "Цена", "Внешний вид"]
                   
+          403:
+            description: "Not enough rights"
+            content: {}
+          
           404:
-            description: "Eror"
+            description: "Error"
             
-  /collections/{token}/{userID}:
+  /collections/{userID}/{token}:
     get:
       tags: 
-        - "Getting collections"
-      summary: "Сollections"
-      description: "Getting a list of collections"
+        - "Collections"
+      summary: "Get all user collections"
+      description: "Getting a list of collections owned by a user"
       parameters:
       - name: "token"
         in: "path"
@@ -231,20 +237,25 @@ paths:
           content:
             application/json:
               schema:
-                type: "array"
-                items:
                   type: "object"
                   properties:
-                    CollectionsID:
-                      type: "integer"
-                      format: "int64"
+                    posts:  
+                      type: "array"
+                      items:
+                        format: "string"
+              example:
+                collections: ["322", "333", "5", "4692"]
+        403:
+            description: "Not enough rights"
+            content: {}
+        
         404:
-          description: "Non-existing token"
+          description: "Error"
   
-  /deletePost/{token}/{collectionID}/{postID}:
+  /deletePost/{collectionID}/{postID}/{token}:
     delete:
       tags:
-        - "Post"
+        - "Collections"
       summary: "The removal of the post"
       description: ""
       parameters:
@@ -271,13 +282,15 @@ paths:
       responses:
         200:
           description: "OK"
+        403:
+          description: "Not enough rights"
         404:
           description: "Non-existing token or non-existing ID post or ID collection"
   
-  /deleted/{token}/{collectionID}:
+  /deleted/{collectionID}/{token}:
     delete:
       tags:
-        - "Collection"
+        - "Collections"
       summary: "The removal of the collection"
       description: ""
       parameters:
@@ -297,10 +310,8 @@ paths:
       responses:
         200:
           description: "OK"
+        403:
+          description: "Not enough rights"  
+        
         404:
           description: "Non-existing token or non-existing or ID collection"
-          
-  
-          
-          
-  
