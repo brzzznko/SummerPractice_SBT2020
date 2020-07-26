@@ -6,4 +6,4 @@ We write an application using a microservice architecture. Our microservices: Co
 
 
 ### Rating Microservice
-[SummerPractice_SBT2020/Collections](https://github.com/BorZzzenko/SummerPractice_SBT2020/tree/master/Rating)
+[SummerPractice_SBT2020/Rating](https://github.com/BorZzzenko/SummerPractice_SBT2020/tree/master/Rating)
