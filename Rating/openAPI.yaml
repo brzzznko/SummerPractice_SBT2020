@@ -1,14 +1,58 @@
-openapi: 3.0.0
+openapi: 3.0.2
 info:
-  title: Estimations
-  version: 3.0.2
+  title: "Rating"
+  version: 1.0.0
+  description: This is a simple Rating microservice API by team 3
 paths:
-  /estimationsPost/{collectionID}/{postID}/{criterion}/{userID}:
+  /rating:
+    post:
+      tags:
+        - "Rating"
+      summary: "Rate post"
+      description: "Rate / edit a post"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                collectionId:
+                  type: "integer"
+                  format: "int64"
+                postID:
+                  type: "integer"
+                  format: "int64"
+                userID:
+                  type: "integer"
+                  format: "int64"
+                rating:
+                  type: "object"
+                  properties:
+                    criterion:  
+                      type: "array"
+                      items:
+                        format: "int64"
+                token:
+                  type: "string"
+            example:
+              collectionId: "216599"
+              postID: "46161651"
+              userID: "789816"
+              rating: {"Качество" : 5, "Цена" : 3, "Внешний вид" : 4}
+              token: "ff48d4fv64d45df1v41db781t7g"
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
+          
+  /rating/{collectionID}/{postID}/{userID}/{criterion}:
    get:
       tags: 
-        - "Evaluation"
-      summary: "Post evaluation"
-      description: "Getting a post rating from a user"
+        - "Rating"
+      summary: "Get post rating of user by criterion"
+      description: "Getting a post rating from a user by criterion"
       parameters:
       - name: "collectionID"
         in: "path"
@@ -45,18 +89,20 @@ paths:
               schema:
                 type: "object"
                 properties:
-                  estimation:
+                  criterion:
                     type: "integer"
                     format: "int64"
+              example:
+                "Цена" : 7
         404:
-          description: "Parameter error"
+          description: "Error"
           
-  /averageByCriterion/{collectionID}/{postID}/{criterion}:
+  /rating/avarage/{collectionID}/{postID}/{criterion}:
     get:
       tags: 
-        - "Average criterion"
-      summary: "Average mark"
-      description: "Average rating by criterion"
+        - "Rating"
+      summary: "Get average post rating by criterion"
+      description: ""
       parameters:
       - name: "collectionID"
         in: "path"
@@ -86,18 +132,20 @@ paths:
               schema:
                 type: "object"
                 properties:
-                  estimation:
+                  criterion:
                     type: "integer"
                     format: "int64"
+              example:
+                "Цена" : 7
         404:
-          description: "Parameter error"
+          description: "Error"
   
-  /average/{collectionID}/{postID}:
+  /rating/average/{collectionID}/{postID}:
     get:
       tags: 
-        - "Average"
-      summary: "Average mark"
-      description: "Average rating"
+        - "Rating"
+      summary: "Get average post rating"
+      description: "The average post rating is the average of the average ratings for the criteria"
       parameters:
       - name: "collectionID"
         in: "path"
@@ -124,5 +172,10 @@ paths:
                   estimation:
                     type: "integer"
                     format: "int64"
+              example:
+                "postRating" : 7
         404:
           description: "Error"
+          
+          
+  
