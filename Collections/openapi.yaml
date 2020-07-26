@@ -1,0 +1,306 @@
+openapi: 3.0.2
+info:
+  title: "Collections"
+  version: 1.0.0
+  description: This is a simple Collections microservice API by team 3
+paths:
+  /collections:
+    post:
+      tags: 
+        - "Collections"
+      summary: "Create new collection"
+      description: "Create new collection and get collection id"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                name:
+                  type: "string"
+                description:
+                  type: "string"
+                token:
+                  type: "string"
+                firstPostId:
+                  type: "string"
+                criterion:
+                  type: "array"
+                  items:
+                    type: "string"
+                    format: "string"
+            example:
+              name: "Чайники"
+              description: "Сравнение моих чайников"
+              token: "f57ebe597a3741b688269209fa29b053"
+              firstPostId: "322"
+              criterion: ["Качество", "Цена", "Внешний вид"]
+      responses:
+        201:
+          description: "Created"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  collectionId:  
+                    type: "integer"
+                    format: "int64"
+              example:
+                collectionId: 1455
+        403:
+          description: "Not enough rights to create the collection"
+          content: {}
+          
+    put:
+      tags:
+        - "Collections"
+      summary: "Edit collection data"
+      description: "Edit token, description"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                token:
+                  type: "string"
+                collectionId:
+                  type: "integer"
+                  format: "int64"
+                name:
+                  type: "string"
+                description:
+                  type: "string"
+                criterion:
+                  type: "array"
+                  items:
+                    type: "string"
+                    format: "string"
+            example:
+              name: "Чайники"
+              description: "Сравнение моих чайников"
+              token: "f57ebe597a3741b688269209fa29b053"
+              firstPostId: "322"
+              criterion: ["Качество", "Цена", "Внешний вид"]
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Incorrect data"
+          
+      
+  
+  /collections/posts:
+      put:
+        tags: 
+          - "Collections"
+        summary: "Add post to collection"
+        description: "Add post to collection"
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  collectionId:
+                    type: "integer"
+                    format: "int64"
+                  postId:
+                    type: "string"
+                  token:
+                    type: "string"
+              example:
+                collectionId: 1445
+                postId: "333"
+                token: "f57ebe597a3741b688269209fa29b053"
+        responses:
+          200:
+            description: "OK"
+            content: {}
+          403:
+            description: "Not enough rights to add a post to the collection"
+            content: {}
+  
+  /collections/posts/{collectionId}:
+      get:
+        tags: 
+          - "Collections"
+        summary: "Get a list of post ids in a collection"
+        description: "Get a list of post ids in a collection"
+        parameters:
+        - name: "collectionId"
+          in: "path"
+          description: "Collection Id"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        responses:
+          200:
+            description: "OK"
+            content: 
+              pplication/json:
+                schema:
+                  type: "object"
+                  properties:
+                    posts:  
+                      type: "array"
+                      items:
+                        format: "string"
+                example:
+                  posts: ["322", "333", "5", "4692"]
+                  
+  /collections/{token}/{collectionId}:
+      get:
+        tags: 
+        - "Collections"
+        summary: "Get collection data"
+        description: "Get collection data"
+        parameters:
+        - name: "token"
+          in: "path"
+          description: "User token"
+          required: true
+          schema:
+            type: "string"
+        - name: "collectionId"
+          in: "path"
+          description: "ID of collection"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        responses:
+          200:
+            description: "OK"
+            content:
+              application/json:
+                schema:
+                  type: "object"
+                  properties:
+                    Name:
+                      type: "string"
+                    Discription:
+                      type: "string"
+                    posts: 
+                      type: "array"
+                      items: 
+                        type: "integer"
+                        format: "int64"
+                    criterion: 
+                      type: "array"
+                      items: 
+                        type: "string"
+                example:
+                  name: "Чайники"
+                  owner: 18
+                  description: "Сравнение моих чайников"
+                  posts: ["322", "777"]
+                  criterion: ["Качество", "Цена", "Внешний вид"]
+                  
+          404:
+            description: "Eror"
+            
+  /collections/{token}/{userID}:
+    get:
+      tags: 
+        - "Getting collections"
+      summary: "Сollections"
+      description: "Getting a list of collections"
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "User token"
+        required: true
+        schema:
+          type: "string"
+      - name: "userID"
+        in: "path"
+        description: "User ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    CollectionsID:
+                      type: "integer"
+                      format: "int64"
+        404:
+          description: "Non-existing token"
+  
+  /deletePost/{token}/{collectionID}/{postID}:
+    delete:
+      tags:
+        - "Post"
+      summary: "The removal of the post"
+      description: ""
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "User token"
+        required: true
+        schema:
+          type: "string"
+      - name: "collectionID"
+        in: "path"
+        description: "ID collection"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "postID"
+        in: "path"
+        description: "ID post"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Non-existing token or non-existing ID post or ID collection"
+  
+  /deleted/{token}/{collectionID}:
+    delete:
+      tags:
+        - "Collection"
+      summary: "The removal of the collection"
+      description: ""
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "User token"
+        required: true
+        schema:
+          type: "string"
+      - name: "collectionID"
+        in: "path"
+        description: "ID collection"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+        404:
+          description: "Non-existing token or non-existing or ID collection"
+          
+  
+          
+          
+  
