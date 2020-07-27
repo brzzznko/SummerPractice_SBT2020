@@ -47,7 +47,7 @@ paths:
         403:
           description: "Not enough rights"
           
-  /rating/{collectionID}/{postID}/{userID}/{criterion}:
+  /rating/collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterion}:
    get:
       tags: 
         - "Rating"
@@ -97,7 +97,7 @@ paths:
         404:
           description: "Error"
           
-  /rating/avarage/{collectionID}/{postID}/{criterion}:
+  /rating/avarage/collection/{collectionID}/posts/{postID}/criterion/{criterion}:
     get:
       tags: 
         - "Rating"
@@ -140,7 +140,7 @@ paths:
         404:
           description: "Error"
   
-  /rating/average/{collectionID}/{postID}:
+  /rating/average/collections/{collectionID}/posts/{postID}:
     get:
       tags: 
         - "Rating"
@@ -176,6 +176,3 @@ paths:
                 "postRating" : 7
         404:
           description: "Error"
-          
-          
-  
