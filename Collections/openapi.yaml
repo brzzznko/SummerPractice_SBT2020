@@ -156,7 +156,7 @@ paths:
           404:
             description: "Not found"
                   
-  /collections/{collectionId}/{token}:
+  /collections/{collectionId}/token/{token}:
       get:
         tags: 
         - "Collections"
@@ -211,7 +211,7 @@ paths:
           404:
             description: "Error"
             
-  /collections/{userID}/{token}:
+  /collections/users/{userID}/token/{token}:
     get:
       tags: 
         - "Collections"
@@ -252,7 +252,7 @@ paths:
         404:
           description: "Error"
   
-  /deletePost/{collectionID}/{postID}/{token}:
+  /collections/{collectionID}/posts/{postID}/token/{token}:
     delete:
       tags:
         - "Collections"
@@ -287,7 +287,7 @@ paths:
         404:
           description: "Non-existing token or non-existing ID post or ID collection"
   
-  /deleted/{collectionID}/{token}:
+  /collections/{collectionID}/token/{token}:
     delete:
       tags:
         - "Collections"
