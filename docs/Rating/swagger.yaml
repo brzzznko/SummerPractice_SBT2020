@@ -7,9 +7,9 @@ paths:
   /rating:
     post:
       tags:
-        - "Rating"
-      summary: "Rate post"
-      description: "Rate / edit a post"
+        - "Rate"
+      summary: "Rate/edit post"
+      description: ""
       requestBody:
         required: true
         content:
@@ -17,7 +17,7 @@ paths:
             schema:
               type: "object"
               properties:
-                collectionId:
+                collectionID:
                   type: "integer"
                   format: "int64"
                 postID:
@@ -36,9 +36,9 @@ paths:
                 token:
                   type: "string"
             example:
-              collectionId: "216599"
-              postID: "46161651"
-              userID: "789816"
+              collectionID: 216599
+              postID: 46161651
+              userID: 789816
               rating: {"Качество" : 5, "Цена" : 3, "Внешний вид" : 4}
               token: "ff48d4fv64d45df1v41db781t7g"
       responses:
@@ -46,13 +46,15 @@ paths:
           description: "OK"
         403:
           description: "Not enough rights"
+        404:
+          description: "Error"
           
-  /rating/collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterion}:
+  /rating/collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}:
    get:
       tags: 
-        - "Rating"
-      summary: "Get post rating of user by criterion"
-      description: "Getting a post rating from a user by criterion"
+        - "Get rating"
+      summary: "Getting a post rating from a user by criterion"
+      description: ""
       parameters:
       - name: "collectionID"
         in: "path"
@@ -68,7 +70,7 @@ paths:
         schema:
           type: "integer"
           format: "int64"
-      - name: "criterion"
+      - name: "criterionName"
         in: "path"
         description: "Name of the criterion"
         required: true
@@ -97,10 +99,10 @@ paths:
         404:
           description: "Error"
           
-  /rating/avarage/collection/{collectionID}/posts/{postID}/criterion/{criterion}:
+  /rating/avarage/collection/{collectionID}/posts/{postID}/criterion/{criterionName}:
     get:
       tags: 
-        - "Rating"
+        - "Get average rating"
       summary: "Get average post rating by criterion"
       description: ""
       parameters:
@@ -118,7 +120,7 @@ paths:
         schema:
           type: "integer"
           format: "int64"
-      - name: "criterion"
+      - name: "criterionName"
         in: "path"
         description: "Name of the criterion"
         required: true
@@ -143,7 +145,7 @@ paths:
   /rating/average/collections/{collectionID}/posts/{postID}:
     get:
       tags: 
-        - "Rating"
+        - "Get average rating"
       summary: "Get average post rating"
       description: "The average post rating is the average of the average ratings for the criteria"
       parameters:
@@ -174,5 +176,69 @@ paths:
                     format: "int64"
               example:
                 "postRating" : 7
+        404:
+          description: "Error"
+          
+  /rating/collections/posts/{postID}/token/{token}:
+    delete:
+      tags:
+        - "Delete rating"
+      summary: "Delete all post ratings"
+      description: ""
+      parameters: 
+      - name: "postID"
+        in: "path"
+        description: "post ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "token"
+        in: "path"
+        description: "user token"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
+          
+  /rating/collections/posts/token/{token}:
+    delete:
+      tags:
+        - "Delete rating"
+      summary: "Delete all post ratings for each post from the list"
+      description: ""
+      parameters: 
+      - name: "postsList"
+        in: "query"
+        description: "List of users IDs"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            postIDs:
+              type: "array"
+              items:
+                type: "integer"
+                format: "int64"
+        example: 
+          postsList: [11, 45, 99, 85]
+      - name: "token"
+        in: "path"
+        description: "user token"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
         404:
           description: "Error"
