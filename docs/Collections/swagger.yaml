@@ -7,7 +7,7 @@ paths:
   /collections:
     post:
       tags: 
-        - "Collections"
+        - "Create"
       summary: "Create new collection"
       description: "Create new collection and get collection id"
       requestBody:
@@ -58,7 +58,7 @@ paths:
           
     put:
       tags:
-        - "Collections"
+        - "Edit"
       summary: "Edit collection data"
       description: "Edit name, description, criterion list"
       requestBody:
@@ -101,7 +101,7 @@ paths:
   /collections/posts:
       put:
         tags: 
-          - "Collections"
+          - "Edit"
         summary: "Add post to collection"
         description: ""
         requestBody:
@@ -132,11 +132,75 @@ paths:
             content: {}
           404:
             description: "Error"
+            
+  /collections/posts/{postID}/token/{token}:
+    delete:
+      tags:
+        - "Delete"
+      summary: "Remove post from all collections"
+      description: ""
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "User token"
+        required: true
+        schema:
+          type: "string"
+      - name: "postID"
+        in: "path"
+        description: "ID post"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
+        404:
+          description: "Error"
+          
+  /collections/posts/token/{token}:
+    delete:
+      tags:
+        - "Delete"
+      summary: "Remove posts from all collections"
+      description: ""
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "User token"
+        required: true
+        schema:
+          type: "string"
+      - name: "postIdList"
+        in: "query"
+        description: "List of user IDs"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            postIDs:
+              type: "array"
+              items:
+                type: "integer"
+                format: "int64"
+        example: 
+          postIDs: [11, 45, 99, 85]
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
+        404:
+          description: "Error"
+      
   
   /collections/{collectionID}/posts:
       get:
         tags: 
-          - "Collections"
+          - "Get"
         summary: "Get a list of post IDs in a collection"
         description: ""
         parameters:
@@ -168,7 +232,7 @@ paths:
   /collections/{collectionID}/token/{token}:
       get:
         tags: 
-        - "Collections"
+        - "Get"
         summary: "Get collection data"
         description: "Get collection data"
         parameters:
@@ -224,8 +288,8 @@ paths:
             
       delete:
         tags:
-          - "Collections"
-        summary: "The removal of the collection"
+          - "Delete"
+        summary: "Remove collection"
         description: ""
         parameters:
         - name: "token"
@@ -253,7 +317,7 @@ paths:
   /collections/users/{userID}/token/{token}:
     get:
       tags: 
-        - "Collections"
+        - "Get"
       summary: "Get all user collections"
       description: "Getting a list of collections owned by a user"
       parameters:
@@ -294,8 +358,8 @@ paths:
   /collections/{collectionID}/posts/{postID}/token/{token}:
     delete:
       tags:
-        - "Collections"
-      summary: "The removal of the post"
+        - "Delete"
+      summary: "Remove post from collection"
       description: ""
       parameters:
       - name: "token"
