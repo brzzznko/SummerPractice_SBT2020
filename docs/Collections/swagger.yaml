@@ -174,9 +174,9 @@ paths:
         required: true
         schema:
           type: "string"
-      - name: "postIdList"
+      - name: "postsList"
         in: "query"
-        description: "List of user IDs"
+        description: "List of users IDs"
         required: true
         schema:
           type: "object"
@@ -187,7 +187,7 @@ paths:
                 type: "integer"
                 format: "int64"
         example: 
-          postIDs: [11, 45, 99, 85]
+          postsList: [11, 45, 99, 85]
       responses:
         200:
           description: "OK"
