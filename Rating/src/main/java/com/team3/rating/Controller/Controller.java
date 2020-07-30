@@ -19,12 +19,28 @@ public class Controller {
         return HttpStatus.OK;
     }
 
+
     @GetMapping("collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
-    public String getRatingByCriterion(@PathVariable String collectionID,
-                                       @PathVariable String postID,
-                                       @PathVariable String userID,
+    public String getRatingByCriterion(@PathVariable Integer collectionID,
+                                       @PathVariable Integer postID,
+                                       @PathVariable Integer userID,
                                        @PathVariable String criterionName){
         return collectionID + "," + postID + "," +  userID;
+    }
+
+
+    @GetMapping("average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}")
+    public String getAverageRatingByCriterion(@PathVariable Integer collectionID,
+                                       @PathVariable Integer postID,
+                                       @PathVariable String criterionName){
+        return new Document("цена:" , 5).toJson();
+    }
+
+
+    @DeleteMapping("collections/posts/{postID}/token/{token}")
+    public boolean deleteAllPostRatings(@PathVariable String token,
+                                        @PathVariable Integer postID){
+        return true;
     }
 
 
