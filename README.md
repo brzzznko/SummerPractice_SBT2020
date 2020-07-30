@@ -1,4 +1,7 @@
 # SummerPractice-SBT2020
+[![Build Status](https://travis-ci.com/BorZzzenko/SummerPractice_SBT2020.svg?branch=borzenko-backbone)](https://travis-ci.com/BorZzzenko/SummerPractice_SBT2020)
+
+
 We write an application using a microservice architecture. Our microservices: Collections microservice and rating microservice.
 
 ### Collections Microservice
