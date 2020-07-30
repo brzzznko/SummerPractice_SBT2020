@@ -1,6 +1,7 @@
 # SummerPractice-SBT2020
 [![Build Status](https://travis-ci.com/BorZzzenko/SummerPractice_SBT2020.svg?branch=borzenko-backbone)](https://travis-ci.com/BorZzzenko/SummerPractice_SBT2020)
 [![codecov](https://codecov.io/gh/BorZzzenko/SummerPractice_SBT2020/branch/master/graph/badge.svg)](https://codecov.io/gh/BorZzzenko/SummerPractice_SBT2020)
+[![chat](https://img.shields.io/discord/732809753574637598?label=discord&logoColor=9cf&style=plastic)](https://discord.gg/6U9FPtD)
 
 
 We write an application using a microservice architecture. Our microservices: Collections microservice and rating microservice.
