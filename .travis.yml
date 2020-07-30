@@ -20,7 +20,7 @@ services:
 
 script:
   - cd ./Rating
-  - mvn install
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 
 # This is to enable CodeCov's coverage
 # If a build is successful, the code is submitted for coverage analysis
