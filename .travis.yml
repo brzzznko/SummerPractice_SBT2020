@@ -21,6 +21,8 @@ services:
 script:
   - cd ./Rating
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn exec:java -Dexec.mainClass="src.main.java.com.team3.rating.Application"
+  - mvn test -B
 
 # This is to enable CodeCov's coverage
 # If a build is successful, the code is submitted for coverage analysis
