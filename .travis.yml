@@ -21,7 +21,7 @@ services:
 script:
   - cd ./Rating
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-  - mvn spring-boot:run
+  - mvn spring-boot:run &
   - mvn test -B
 
 # This is to enable CodeCov's coverage
