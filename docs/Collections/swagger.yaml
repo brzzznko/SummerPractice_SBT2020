@@ -17,11 +17,11 @@ paths:
             schema:
               type: "object"
               properties:
+                token:
+                  type: "string"
                 name:
                   type: "string"
                 description:
-                  type: "string"
-                token:
                   type: "string"
                 firstPostId:
                   type: "integer"
@@ -32,9 +32,9 @@ paths:
                     type: "string"
                     format: "string"
             example:
+              token: "f57ebe597a3741b688269209fa29b053"
               name: "Чайники"
               description: "Сравнение моих чайников"
-              token: "f57ebe597a3741b688269209fa29b053"
               firstPostId: 322
               criterion: ["Качество", "Цена", "Внешний вид"]
       responses:
@@ -52,7 +52,6 @@ paths:
                 collectionID: 1455
         403:
           description: "Not enough rights to create the collection"
-          content: {}
         404:
           description: "Error"
           
@@ -126,10 +125,8 @@ paths:
         responses:
           200:
             description: "OK"
-            content: {}
           403:
             description: "Not enough rights to add a post to the collection"
-            content: {}
           404:
             description: "Error"
             
@@ -137,7 +134,7 @@ paths:
     delete:
       tags:
         - "Delete"
-      summary: "Remove post from all collections"
+      summary: "Remove one post from all collections"
       description: ""
       parameters:
       - name: "token"
@@ -165,7 +162,7 @@ paths:
     delete:
       tags:
         - "Delete"
-      summary: "Remove posts from all collections"
+      summary: "Remove posts from all collections. Posts to be deleted are sent as a list"
       description: ""
       parameters:
       - name: "token"
@@ -179,15 +176,12 @@ paths:
         description: "List of users IDs"
         required: true
         schema:
-          type: "object"
-          properties:
-            postIDs:
-              type: "array"
-              items:
-                type: "integer"
-                format: "int64"
+          type: "array"
+          items:
+            type: "integer"
+            format: "int64"
         example: 
-          postsList: [11, 45, 99, 85]
+          [11, 45, 99, 85]
       responses:
         200:
           description: "OK"
@@ -234,7 +228,7 @@ paths:
         tags: 
         - "Get"
         summary: "Get collection data"
-        description: "Get collection data"
+        description: ""
         parameters:
         - name: "token"
           in: "path"
