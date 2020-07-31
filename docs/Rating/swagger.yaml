@@ -219,7 +219,8 @@ paths:
     delete:
       tags:
         - "Delete rating"
-      summary: "Remove all post ratings from all collections. One post is given to remove ratings"
+      summary: "Remove all post ratings from all collections.
+       One post is given to remove ratings"
       description: ""
       parameters: 
       - name: "postID"
@@ -248,7 +249,8 @@ paths:
     delete:
       tags:
         - "Delete rating"
-      summary: "Delete all post ratings from all collections. Posts to be deleted are sent as a list"
+      summary: "Delete all post ratings from all collections.
+       Posts to be deleted are sent as a list"
       description: ""
       parameters: 
       - name: "postsList"

@@ -162,7 +162,8 @@ paths:
     delete:
       tags:
         - "Delete"
-      summary: "Remove posts from all collections. Posts to be deleted are sent as a list"
+      summary: "Remove posts from all collections.
+       Posts to be deleted are sent as a list"
       description: ""
       parameters:
       - name: "token"
