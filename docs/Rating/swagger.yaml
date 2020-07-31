@@ -178,6 +178,42 @@ paths:
                 "postRating" : 7
         404:
           description: "Error"
+  
+  /rating/collections/{collectionID}/posts/{postID}/token/{token}:
+    delete:
+      tags:
+        - "Delete rating"
+      summary: "Delete all post ratings from a specific collection"
+      description: ""
+      parameters:
+      - name: "collectionID"
+        in: "path"
+        description: "collection ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "postID"
+        in: "path"
+        description: "post ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "token"
+        in: "path"
+        description: "user token"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
+        404:
+          description: "Error"
           
   /rating/collections/posts/{postID}/token/{token}:
     delete:
