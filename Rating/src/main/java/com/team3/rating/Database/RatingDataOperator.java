@@ -4,22 +4,27 @@ import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static java.lang.Integer.getInteger;
 
+@Component
 public class RatingDataOperator {
-    private MongoCollection<Document> collection;
 
+    private final MongoCollection<Document> collection;
 
-    public RatingDataOperator() {
+    public RatingDataOperator(@Value("${mongodb.host}") String host,
+                              @Value("${mongodb.port}") int port,
+                              @Value("${mongodb.databaseName}")  String databaseName,
+                              @Value("${mongodb.collectionName}")  String collectionName) {
         /**
          * Connection to MongoDb
          */
-        MongoClient mongoClient = new MongoClient( "localhost" , 27017 );
-        MongoDatabase database = mongoClient.getDatabase("mydb");
-        collection = database.getCollection("rating");
+        MongoClient mongoClient = new MongoClient( host, port );
+        MongoDatabase database = mongoClient.getDatabase(databaseName);
+        collection = database.getCollection(collectionName);
     }
 
     /**

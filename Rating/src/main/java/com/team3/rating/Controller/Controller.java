@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("rating")
 public class Controller {
-    private RatingDataOperator ratingDataOperator = new RatingDataOperator();
+    @Autowired
+    private RatingDataOperator ratingDataOperator;
 
     @PostMapping("/")
     public HttpStatus ratePost(@RequestBody Document requestBody) {
@@ -24,22 +25,22 @@ public class Controller {
     public String getRatingByCriterion(@PathVariable Integer collectionID,
                                        @PathVariable Integer postID,
                                        @PathVariable Integer userID,
-                                       @PathVariable String criterionName){
+                                       @PathVariable String criterionName) {
         return collectionID + "," + postID + "," +  userID;
     }
 
 
     @GetMapping("average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}")
     public String getAverageRatingByCriterion(@PathVariable Integer collectionID,
-                                       @PathVariable Integer postID,
-                                       @PathVariable String criterionName){
+                                              @PathVariable Integer postID,
+                                              @PathVariable String criterionName) {
         return new Document("цена:" , 5).toJson();
     }
 
 
     @DeleteMapping("collections/posts/{postID}/token/{token}")
     public boolean deleteAllPostRatings(@PathVariable String token,
-                                        @PathVariable Integer postID){
+                                        @PathVariable Integer postID) {
         return true;
     }
 
