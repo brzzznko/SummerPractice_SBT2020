@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: This is a simple Collections microservice API by team 3
 paths:
-  /collections:
+  /collections/creat:
     post:
       tags: 
         - "Create"
@@ -224,26 +224,19 @@ paths:
           404:
             description: "Not found"
                   
-  /collections/{collectionID}/token/{token}:
+  /collections/get/{collectionID}:
       get:
         tags: 
         - "Get"
         summary: "Get collection data"
         description: ""
         parameters:
-        - name: "token"
-          in: "path"
-          description: "User token"
-          required: true
-          schema:
-            type: "string"
         - name: "collectionID"
           in: "path"
           description: "ID of collection"
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: "string"
         responses:
           200:
             description: "OK"

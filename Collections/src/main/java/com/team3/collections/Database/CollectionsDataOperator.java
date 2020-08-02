@@ -6,7 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
+import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Filters.eq;
 
 @Component
@@ -39,4 +39,12 @@ public class CollectionsDataOperator {
     public void deleteCollection(Integer collectionId) {
         collection.deleteOne(eq("collection_id", collectionId));
     }
+
+    /**
+     * Get collection data by ID
+     */
+    public Document getCollection(String idCollection){
+        return collection.find(eq("collection_id", idCollection)).first();
+    }
+
 }
