@@ -6,6 +6,7 @@ import org.bson.Document;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,9 @@ import java.net.URISyntaxException;
 public class ControllerTest {
 
     RestTemplate restTemplate = new RestTemplate();
-    RatingDataOperator ratingDataOperator = new RatingDataOperator();
+
+    @Autowired
+    RatingDataOperator ratingDataOperator;
 
     @Test
     @DisplayName("Rate post")
@@ -41,14 +44,14 @@ public class ControllerTest {
         String criterionName = "Цена";
         Integer expectedRating = ((Document)requestBody.get("rating")).getInteger(criterionName);
 
-        Integer actualRating = ratingDataOperator.findRating(requestBody.getInteger("collectionID"), requestBody.getInteger("postID"),
-                requestBody.getInteger("userID"), criterionName);
+        Integer actualRating = ratingDataOperator.findRating(requestBody.getInteger("collectionID"),
+                requestBody.getInteger("postID"), requestBody.getInteger("userID"), criterionName);
 
         Assertions.assertEquals(expectedRating, actualRating);
 
         // Remove test data from db
-        ratingDataOperator.deleteData(requestBody.getInteger("collectionID"), requestBody.getInteger("postID"),
-                requestBody.getInteger("userID"));
+        ratingDataOperator.deleteData(requestBody.getInteger("collectionID"),
+                requestBody.getInteger("postID"), requestBody.getInteger("userID"));
     }
 
     @Test
