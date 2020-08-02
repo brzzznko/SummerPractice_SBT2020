@@ -32,7 +32,7 @@ public class ControllerTest {
         Document requestBody = new Document("collection_id", 21659)
                 .append("post_id", 46161651)
                 .append("user_id", 789816)
-                .append("rating", new Document("Цена", 5).append("Качество", 9))
+                .append("rating", new Document("Цена", 4).append("Качество", 9))
                 .append("token", "ff48d4fv64d45df1v41db781t7g");
 
         ResponseEntity<String> result = restTemplate.postForEntity(uri, requestBody, String.class);
@@ -44,8 +44,8 @@ public class ControllerTest {
         String criterionName = "Цена";
         Integer expectedRating = ((Document)requestBody.get("rating")).getInteger(criterionName);
 
-        Integer actualRating = ratingDataOperator.findRating(requestBody.getInteger("collection_id"),
-                requestBody.getInteger("post_id"), requestBody.getInteger("user_id"), criterionName);
+        Integer actualRating = ratingDataOperator.findRating(requestBody.getInteger("user_id"), requestBody.getInteger("collection_id"),
+                requestBody.getInteger("post_id"), criterionName);
 
         Assertions.assertEquals(expectedRating, actualRating);
 
@@ -54,7 +54,7 @@ public class ControllerTest {
                 requestBody.getInteger("post_id"), requestBody.getInteger("user_id"));
     }
 
-    @Test
+    /*@Test
     @DisplayName("Getting test by criterion")
     public void getRatingByCriterion() throws URISyntaxException {
         String url = "http://localhost:8080/rating/collections/11/posts/12/users/3/criterion/55";
@@ -64,5 +64,5 @@ public class ControllerTest {
 
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
         Assertions.assertEquals("11,12,3", result.getBody());
-    }
+    }*/
 }
