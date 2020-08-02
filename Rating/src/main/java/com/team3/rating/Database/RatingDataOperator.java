@@ -9,6 +9,10 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.print.Doc;
+import java.sql.Array;
+import java.util.ArrayList;
+
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
@@ -16,37 +20,39 @@ import static com.mongodb.client.model.Updates.set;
 @Component
 public class RatingDataOperator {
 
-    private final MongoCollection<Document> collection;
+    private final MongoCollection<Document> ratings; //Database which storing all ratings from all users
+    private final MongoCollection<Document> averageRatings; //Database storing average post ratings by criteria and the average between them
 
     public RatingDataOperator(@Value("${mongodb.host}") String host,
                               @Value("${mongodb.port}") int port,
                               @Value("${mongodb.databaseName}")  String databaseName,
-                              @Value("${mongodb.collectionName}")  String collectionName) {
+                              @Value("${mongodb.ratingsCollectionName}")  String ratingsCollectionName,
+                              @Value("${mongodb.averageRatingsCollectionName}")  String averageRatingsCollectionName) {
         /**
          * Connection to MongoDb
          */
         MongoClient mongoClient = new MongoClient( host, port );
         MongoDatabase database = mongoClient.getDatabase(databaseName);
-        collection = database.getCollection(collectionName);
+        ratings = database.getCollection(ratingsCollectionName);
+        averageRatings = database.getCollection(averageRatingsCollectionName);
     }
 
     /**
      * Creates mongoDB entry
      */
     public void createRating(Document doc) {
-        Document exRating = new Document(doc);
 
-        Integer userId = exRating.getInteger("userID");
-        Integer collectionId = exRating.getInteger("collectionID");
-        Integer postId = exRating.getInteger("postID");
+        Integer userId = doc.getInteger("user_id");
+        Integer collectionId = doc.getInteger("collection_id");
+        Integer postId = doc.getInteger("post_id");
 
         Bson updateOperation = set("rating", doc.get("rating"));
 
-        collection.updateOne(
+        ratings.updateOne(
                 and(
-                        eq("collectionID", collectionId),
-                        eq("postID", postId),
-                        eq("userID", userId)
+                        eq("collection_id", collectionId),
+                        eq("post_id", postId),
+                        eq("user_id", userId)
                 ),
                 updateOperation,
                 new UpdateOptions().upsert(true).bypassDocumentValidation(true)
@@ -57,11 +63,11 @@ public class RatingDataOperator {
      * Findes rating by criterion
      */
     public Integer findRating(Integer userId, Integer collectionId, Integer postId, String criterionName){
-        Document response = collection.find(
+        Document response = ratings.find(
                 and(
-                        eq("collectionID", collectionId),
-                        eq("postID", postId),
-                        eq("userID", userId)
+                        eq("collection_id", collectionId),
+                        eq("post_id", postId),
+                        eq("user_id", userId)
                 )
         ).first();
 
@@ -70,13 +76,30 @@ public class RatingDataOperator {
 
     /**
      * Delete document from db
-     *
      */
     public void deleteData(Integer collectionId, Integer postId, Integer userId) {
-        collection.deleteOne(and(
-                eq("collectionID", collectionId),
-                eq("postID", postId),
-                eq("userID", userId)
+        ratings.deleteOne(and(
+                eq("collection_id", collectionId),
+                eq("post_id", postId),
+                eq("user_id", userId)
         ));
     }
+
+
+    /**
+     * AverageRating
+     */
+    private void updateAvarageRating(Integer collectionId, Integer postId) {
+        for (Document cur : ratings.find(
+                and(
+                    eq("collection_id", collectionId),
+                    eq("post_id", postId)
+                )
+            )
+        ){
+            /**Code*/
+        }
+
+    }
+
 }
