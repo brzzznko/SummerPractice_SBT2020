@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 @SpringBootTest
 public class ControllerTest {
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     RatingDataOperator ratingDataOperator;
