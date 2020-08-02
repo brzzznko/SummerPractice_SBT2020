@@ -19,6 +19,11 @@ services:
 # In our case it will be 'mvn install' followed by 'mvn test'
 
 script:
+  - cd ./Collections
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - mvn spring-boot:run &
+  - mvn test -B
+  - cd ..
   - cd ./Rating
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
   - mvn spring-boot:run &
