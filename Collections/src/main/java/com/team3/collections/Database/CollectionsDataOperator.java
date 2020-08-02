@@ -7,6 +7,8 @@ import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import static com.mongodb.client.model.Filters.eq;
+
 @Component
 public class CollectionsDataOperator {
     private final MongoCollection<Document> collection;
@@ -28,5 +30,13 @@ public class CollectionsDataOperator {
      */
     public void insertJson(Document doc) {
         collection.insertOne(doc);
+    }
+
+    /**
+     * Delete collection by ID
+     * @param collectionId
+     */
+    public void deleteCollection(Integer collectionId) {
+        collection.deleteOne(eq("collection_id", collectionId));
     }
 }
