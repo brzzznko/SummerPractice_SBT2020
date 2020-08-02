@@ -26,7 +26,7 @@ public class ApiControllerTest {
         String token = "sdafsda";
         int collectionId = 1;
 
-        String url = "http://localhost:8080/collections/" + collectionId + "/token/" + token;
+        String url = "http://localhost:8081/collections/" + collectionId + "/token/" + token;
         URI uri = new URI(url);
 
 
