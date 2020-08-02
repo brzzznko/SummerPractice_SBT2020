@@ -178,12 +178,49 @@ paths:
                 "postRating" : 7
         404:
           description: "Error"
+  
+  /rating/collections/{collectionID}/posts/{postID}/token/{token}:
+    delete:
+      tags:
+        - "Delete rating"
+      summary: "Delete all post ratings from a specific collection"
+      description: ""
+      parameters:
+      - name: "collectionID"
+        in: "path"
+        description: "collection ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "postID"
+        in: "path"
+        description: "post ID"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      - name: "token"
+        in: "path"
+        description: "user token"
+        required: true
+        schema:
+          type: "integer"
+          format: "int64"
+      responses:
+        200:
+          description: "OK"
+        403:
+          description: "Not enough rights"
+        404:
+          description: "Error"
           
   /rating/collections/posts/{postID}/token/{token}:
     delete:
       tags:
         - "Delete rating"
-      summary: "Delete all post ratings"
+      summary: "Remove all post ratings from all collections.
+       One post is given to remove ratings"
       description: ""
       parameters: 
       - name: "postID"
@@ -205,12 +242,15 @@ paths:
           description: "OK"
         403:
           description: "Not enough rights"
+        404:
+          description: "Error"
           
   /rating/collections/posts/token/{token}:
     delete:
       tags:
         - "Delete rating"
-      summary: "Delete all post ratings for each post from the list"
+      summary: "Delete all post ratings from all collections.
+       Posts to be deleted are sent as a list"
       description: ""
       parameters: 
       - name: "postsList"
@@ -218,15 +258,12 @@ paths:
         description: "List of users IDs"
         required: true
         schema:
-          type: "object"
-          properties:
-            postIDs:
-              type: "array"
-              items:
-                type: "integer"
-                format: "int64"
+          type: "array"
+          items:
+            type: "integer"
+            format: "int64"
         example: 
-          postsList: [11, 45, 99, 85]
+          [11, 45, 99, 85]
       - name: "token"
         in: "path"
         description: "user token"
