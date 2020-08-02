@@ -14,19 +14,28 @@ public class Controller {
 
     @PostMapping("/")
     public HttpStatus ratePost(@RequestBody Document requestBody) {
-        requestBody.remove("token");
-        ratingDataOperator.createRating(requestBody);
-
+        try {
+            String currentToken = requestBody.getString("token");
+            if (true) {
+                requestBody.remove("token");
+                ratingDataOperator.createRating(requestBody);
+            } else {
+                return HttpStatus.UNAUTHORIZED;
+            }
+        } catch (Exception ex) {
+            return HttpStatus.BAD_REQUEST;
+        }
         return HttpStatus.OK;
     }
 
 
     @GetMapping("collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
-    public String getRatingByCriterion(@PathVariable Integer collectionID,
-                                       @PathVariable Integer postID,
-                                       @PathVariable Integer userID,
-                                       @PathVariable String criterionName) {
-        return collectionID + "," + postID + "," +  userID;
+    public Integer getRatingByCriterion(@PathVariable Integer collectionID,
+                                    @PathVariable Integer postID,
+                                    @PathVariable Integer userID,
+                                    @PathVariable String criterionName) {
+
+        return ratingDataOperator.findRating(userID, collectionID, postID, criterionName);
     }
 
 
