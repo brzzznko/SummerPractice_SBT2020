@@ -1,7 +1,6 @@
 package com.team3.collections.Controllers;
 
 import com.team3.collections.Database.CollectionsDataOperator;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,7 @@ public class ApiController {
     CollectionsDataOperator collectionsDataOperator;
 
     @DeleteMapping("/{collectionID}/token/{token}")
-    public ResponseEntity<String> deleteCollection(@PathVariable("collectionID") Integer collectionId,
+    public ResponseEntity<String> deleteCollection(@PathVariable("collectionID") String collectionId,
                                                      @PathVariable("token") String token) {
 
         // !!! Need to do check with auth service

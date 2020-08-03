@@ -17,9 +17,8 @@ public class CollectionsDataOperator {
                               @Value("${mongodb.port}") int port,
                               @Value("${mongodb.databaseName}")  String databaseName,
                               @Value("${mongodb.collectionName}")  String collectionName) {
-        /**
-         * Connection to MongoDb
-         */
+
+        // Connection to MongoDb
         MongoClient mongoClient = new MongoClient( host, port );
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         collection = database.getCollection(collectionName);
@@ -34,9 +33,9 @@ public class CollectionsDataOperator {
 
     /**
      * Delete collection by ID
-     * @param collectionId
+     * @param collectionId id of collection
      */
-    public void deleteCollection(Integer collectionId) {
+    public void deleteCollection(String collectionId) {
         collection.deleteOne(eq("collection_id", collectionId));
     }
 }

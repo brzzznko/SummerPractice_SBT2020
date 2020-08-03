@@ -24,27 +24,11 @@ public class ApiControllerTest {
 
     @BeforeAll
     public static void fillDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
-        collectionsDataOperator.insertJson(new Document("collection_id", "25")
-                .append("owner_id", 1)
-                .append("name", "Макароны")
-                .append("description", "Сравнение любимых макарон")
-                .append("posts", Arrays.asList(11, 12, 13))
-                .append("criterion", Arrays.asList("Вкус", "Цена"))
-        );
-
         collectionsDataOperator.insertJson(new Document("collection_id", "1")
                 .append("owner_id", 2)
                 .append("name", "Яблоки")
                 .append("description", "Сравнение")
                 .append("posts", Arrays.asList(33, 66, 88))
-                .append("criterion", Arrays.asList("Вкус", "Цена"))
-        );
-
-        collectionsDataOperator.insertJson(new Document("collection_id", "17")
-                .append("owner_id", 3)
-                .append("name", "Платки")
-                .append("description", "Сравнение")
-                .append("posts", Arrays.asList(1100, 1200, 1300))
                 .append("criterion", Arrays.asList("Вкус", "Цена"))
         );
     }
@@ -55,7 +39,7 @@ public class ApiControllerTest {
     public void deleteCollection() throws URISyntaxException {
         // Good token
         String token = "1";
-        int collectionId = 1;
+        String collectionId = "1";
 
         //Http request
         String url = "http://localhost:8081/collections/" + collectionId + "/token/" + token;
@@ -71,7 +55,7 @@ public class ApiControllerTest {
     public void notRightsToDeleteCollection() throws URISyntaxException {
         // Bad token
         String token = "sdfjka";
-        int collectionId = 1;
+        String collectionId = "1";
 
         // Uri for request
         String url = "http://localhost:8081/collections/" + collectionId + "/token/" + token;
