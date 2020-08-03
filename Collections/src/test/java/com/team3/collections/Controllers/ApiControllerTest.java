@@ -3,6 +3,7 @@ package com.team3.collections.Controllers;
 import com.team3.collections.Database.CollectionsDataOperator;
 import org.bson.Document;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,13 +20,10 @@ import java.util.Arrays;
 
 @SpringBootTest
 public class ApiControllerTest {
-    @Autowired
-    private CollectionsDataOperator collectionsDataOperator;
-
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @BeforeTestClass
-    public void fillDatabase() {
+    @BeforeAll
+    public static void fillDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
         collectionsDataOperator.insertJson(new Document("collection_id", "25")
                 .append("owner_id", 1)
                 .append("name", "Макароны")
