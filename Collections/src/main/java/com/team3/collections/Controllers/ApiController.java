@@ -37,22 +37,42 @@ public class ApiController {
         return HttpStatus.OK;
     }
 
-    @PostMapping("/creat")
+    @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public HttpStatus createNewCollection(@RequestBody Document bodyRequest){
-        final String id = java.util.UUID.randomUUID().toString();           //Generating an ID
-        bodyRequest.append("collection_id", id);
-        collectionsDataOperator.insertJson(bodyRequest);
+        try {
+            String currentToken = bodyRequest.getString("token");
+            if (true) {
+                bodyRequest.remove("token");
+                final String id = java.util.UUID.randomUUID().toString();           //Generating an ID
+                bodyRequest.append("collection_id", id);
+                collectionsDataOperator.insertJson(bodyRequest);
+            } else {
+                return HttpStatus.UNAUTHORIZED;
+            }
+        } catch (Exception ex) {
+            return HttpStatus.BAD_REQUEST;
+        }
         return HttpStatus.OK;
     }
 
-    @GetMapping("/get/{collectionID}")
-    public ResponseEntity<Document> getCollectionData(@PathVariable String collectionID){
-        Document doc = collectionsDataOperator.getCollection(collectionID);
-        if(doc == null){
-            return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }else{
-            return new ResponseEntity<>(doc, HttpStatus.OK);
+    @GetMapping("/{collectionID}/token/{token}")
+    public ResponseEntity<Document> getCollectionData(@PathVariable("collectionID") String collectionID,
+                                                      @PathVariable("token") String token){
+        try {
+            String currentToken = token;
+            if (true) {
+                Document doc = collectionsDataOperator.getCollection(collectionID);
+                if(doc == null){
+                    return  new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }else{
+                    return new ResponseEntity<>(doc, HttpStatus.OK);
+                }
+            } else {
+                return  new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
