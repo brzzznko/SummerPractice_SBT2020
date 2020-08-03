@@ -2,12 +2,14 @@ package com.team3.collections.Controllers;
 
 import com.team3.collections.Database.CollectionsDataOperator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -22,17 +24,34 @@ public class ApiControllerTest {
 
 
     @Test
+    @DisplayName("Success deletion")
     public void deleteCollection() throws URISyntaxException {
-        String token = "sdafsda";
+        // Good token
+        String token = "1";
         int collectionId = 1;
 
+        //Http request
         String url = "http://localhost:8081/collections/" + collectionId + "/token/" + token;
         URI uri = new URI(url);
-
-
         ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class);
 
         // Check Http status code
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Not enough rights to delete collection")
+    public void notRightsToDeleteCollection() throws URISyntaxException {
+        // Bad token
+        String token = "sdfjka";
+        int collectionId = 1;
+
+        // Uri for request
+        String url = "http://localhost:8081/collections/" + collectionId + "/token/" + token;
+        URI uri = new URI(url);
+
+        // Try to make request and check Http status code
+        Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
+                () -> restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class));
     }
 }
