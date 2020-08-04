@@ -65,4 +65,9 @@ public class CollectionsDataOperator {
         Bson updateOperation = pull("posts", postId);
         collection.updateOne(eq("collection_id", collectionId), updateOperation);
     }
+
+    public void deletePostFromAllCollection(Integer postId) {
+        Bson updateOperation = pull("posts", postId);
+        collection.updateMany(eq("posts", postId), updateOperation);
+    }
 }

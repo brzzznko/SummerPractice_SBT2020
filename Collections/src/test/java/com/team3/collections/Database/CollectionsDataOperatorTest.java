@@ -137,4 +137,43 @@ public class CollectionsDataOperatorTest {
         // Delete test doc
         collectionsDataOperator.deleteCollection(collectionId);
     }
+
+    @Test
+    @DisplayName("Delete post from all collection")
+    void deletePostFromAllCollection() {
+        Integer postId = 1;
+        String colletionId = "56";
+        List<Integer> posts = Arrays.asList(110, postId, 13, 886, 32);
+
+        Document testPostDeleting = new Document("collection_id", colletionId)
+                .append("owner_id", 35)
+                .append("name", "Груши")
+                .append("description", "Сравнение")
+                .append("posts", posts)
+                .append("criterion", Arrays.asList("Вкус", "Цена"));
+
+        // Insert 3 test documents
+        for (int i = 0; i < 3; i++) {
+            testPostDeleting.remove("_id");
+            collectionsDataOperator.insertJson(testPostDeleting);
+            colletionId += 1;
+            testPostDeleting.replace("collection_id", colletionId);
+        }
+
+        // Delete post from all collections
+        collectionsDataOperator.deletePostFromAllCollection(postId);
+
+        // Check that post was deleted from all collections
+        for (int i = 0; i < 3; i++) {
+            colletionId = colletionId.substring(0, colletionId.length() - 1);
+
+            // check
+            Document afterDeleting = collectionsDataOperator.findCollection(colletionId);
+            List<Integer> postsAfter = afterDeleting.getList("posts", Integer.class);
+            Assertions.assertNotEquals(posts, postsAfter);
+
+            // Delete collection
+            collectionsDataOperator.deleteCollection(colletionId);
+        }
+    }
 }
