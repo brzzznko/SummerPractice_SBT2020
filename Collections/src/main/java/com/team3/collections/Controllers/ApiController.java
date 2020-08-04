@@ -17,13 +17,31 @@ public class ApiController {
 
     @DeleteMapping("/{collectionID}/token/{token}")
     public ResponseEntity<String> deleteCollection(@PathVariable("collectionID") String collectionId,
-                                                     @PathVariable("token") String token) {
+                                                   @PathVariable("token") String token) {
 
         // !!! Need to do check with auth service
         boolean canDeleteCollection = token.equals("1");
 
         if (canDeleteCollection) {
             collectionsDataOperator.deleteCollection(collectionId);
+        }
+        else {
+            return new ResponseEntity<>("Not enough rights", HttpStatus.FORBIDDEN);
+        }
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{collectionID}/post/{postID}/token/{token}")
+    public ResponseEntity<String> deletePostFromCollection(@PathVariable("collectionID") String collectionId,
+                                                           @PathVariable("postID") Integer postId,
+                                                           @PathVariable("token") String token) {
+
+        // !!! Need to do check with auth service
+        boolean canDeletePost = token.equals("1");
+
+        if (canDeletePost) {
+            collectionsDataOperator.deletePostFromCollection(collectionId, postId);
         }
         else {
             return new ResponseEntity<>("Not enough rights", HttpStatus.FORBIDDEN);
