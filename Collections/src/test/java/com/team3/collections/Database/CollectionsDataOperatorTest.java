@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @SpringBootTest
 public class CollectionsDataOperatorTest {
@@ -69,5 +71,70 @@ public class CollectionsDataOperatorTest {
         // Try to find
         Document found = collectionsDataOperator.findCollection(collectionId);
         Assertions.assertNull(found);
+    }
+
+    @Test
+    @DisplayName("Delete post from collection")
+    public void deletePostFromCollection() {
+        // Add test doc
+        Document testPostDeleting = new Document("collection_id", "56")
+                .append("owner_id", 35)
+                .append("name", "Груши")
+                .append("description", "Сравнение")
+                .append("posts", Arrays.asList(13, 886, 32))
+                .append("criterion", Arrays.asList("Вкус", "Цена"));
+
+        collectionsDataOperator.insertJson(testPostDeleting);
+
+        String collectionId = testPostDeleting.getString("collection_id");
+
+        // Get posts list
+        List<Integer> posts = new ArrayList<>(testDoc.getList("posts", Integer.class));
+
+        // Remove post
+        int indexForRemove = 0;
+        collectionsDataOperator.deletePostFromCollection(collectionId, posts.get(indexForRemove));
+        posts.remove(indexForRemove);
+
+        // Check that post was removed
+        Document collection = collectionsDataOperator.findCollection(collectionId);
+        List<Integer> postsAfter = collection.getList("posts", Integer.class);
+
+        Assertions.assertEquals(posts, postsAfter);
+
+        // Delete test doc
+        collectionsDataOperator.deleteCollection(collectionId);
+    }
+
+    @Test
+    @DisplayName("Delete not existing post from collection")
+    public void deleteNotExistingPostFromCollection() {
+        // Add test doc
+        Document testPostDeleting = new Document("collection_id", "56")
+                .append("owner_id", 35)
+                .append("name", "Груши")
+                .append("description", "Сравнение")
+                .append("posts", Arrays.asList(13, 886, 32))
+                .append("criterion", Arrays.asList("Вкус", "Цена"));
+
+        collectionsDataOperator.insertJson(testPostDeleting);
+
+        String collectionId = testPostDeleting.getString("collection_id");
+
+        // Get posts list
+        List<Integer> posts = new ArrayList<>(testDoc.getList("posts", Integer.class));
+
+        // Remove post
+        int postForRemove = 0;
+        collectionsDataOperator.deletePostFromCollection(collectionId, postForRemove);
+
+        // Check that post was removed
+        Document collection = collectionsDataOperator.findCollection(collectionId);
+        List<Integer> postsAfter = collection.getList("posts", Integer.class);
+
+        Assertions.assertEquals(posts, postsAfter);
+
+        // Delete test doc
+        collectionsDataOperator.deleteCollection(collectionId);
     }
 }
