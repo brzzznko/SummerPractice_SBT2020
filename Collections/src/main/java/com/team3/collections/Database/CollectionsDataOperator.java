@@ -31,6 +31,16 @@ public class CollectionsDataOperator {
         collection.insertOne(doc);
     }
 
+    public Document findCollection(String collectionId) {
+        Document found = collection.find(eq("collection_id", collectionId)).first();
+
+        if (found != null) {
+            found.remove("_id");
+        }
+
+        return found;
+    }
+
     /**
      * Delete collection by ID
      * @param collectionId id of collection
