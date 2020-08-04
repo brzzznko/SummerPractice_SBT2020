@@ -15,6 +15,12 @@ public class ApiController {
     @Autowired
     CollectionsDataOperator collectionsDataOperator;
 
+    /**
+     * Delete collection by ID, if you have sufficient rights.
+     * @param collectionId ID of collection
+     * @param token access token of user session
+     * @return HttpStatus with message
+     */
     @DeleteMapping("/{collectionID}/token/{token}")
     public ResponseEntity<String> deleteCollection(@PathVariable("collectionID") String collectionId,
                                                    @PathVariable("token") String token) {
@@ -32,6 +38,13 @@ public class ApiController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
+    /**
+     * Delete post from collection, if you have sufficient rights.
+     * @param collectionId id of collection
+     * @param postId id of post
+     * @param token access token of user session
+     * @return HttpStatus with message
+     */
     @DeleteMapping("/{collectionID}/post/{postID}/token/{token}")
     public ResponseEntity<String> deletePostFromCollection(@PathVariable("collectionID") String collectionId,
                                                            @PathVariable("postID") Integer postId,
