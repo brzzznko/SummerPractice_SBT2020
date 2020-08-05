@@ -4,6 +4,7 @@ import com.team3.rating.Database.RatingDataOperator;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,7 +30,7 @@ public class Controller {
     }
 
 
-    @GetMapping("collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
+    @GetMapping("/collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
     public Integer getRatingByCriterion(@PathVariable Integer collectionID,
                                     @PathVariable Integer postID,
                                     @PathVariable Integer userID,
@@ -46,11 +47,29 @@ public class Controller {
         return new Document("цена:" , 5).toJson();
     }
 
+    /**
+     * Delete all specific post ratings from specific collection
+     * @param collectionId id of collection
+     * @param postId id of post
+     * @param token user access token
+     * @return Http Status code
+     */
+    @DeleteMapping("/collections/{collectionID}/posts/{postID}/token/{token}")
+    public ResponseEntity<String> deletePostRatings(@PathVariable("collectionID") String collectionId,
+                                                    @PathVariable("postID") Integer postId,
+                                                    @PathVariable("token") String token) {
 
-    @DeleteMapping("collections/posts/{postID}/token/{token}")
-    public boolean deleteAllPostRatings(@PathVariable String token,
-                                        @PathVariable Integer postID) {
-        return true;
+        // !!! Need to do check with auth service
+        boolean canDeleteRating = token.equals("1");
+
+        if (canDeleteRating) {
+            ratingDataOperator.deletePostRatingsFromCollection(collectionId, postId);
+        }
+        else {
+            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 

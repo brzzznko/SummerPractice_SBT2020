@@ -9,10 +9,6 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.print.Doc;
-import java.sql.Array;
-import java.util.ArrayList;
-
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
@@ -28,9 +24,8 @@ public class RatingDataOperator {
                               @Value("${mongodb.databaseName}")  String databaseName,
                               @Value("${mongodb.ratingsCollectionName}")  String ratingsCollectionName,
                               @Value("${mongodb.averageRatingsCollectionName}")  String averageRatingsCollectionName) {
-        /**
-         * Connection to MongoDb
-         */
+
+        // Connection to MongoDb
         MongoClient mongoClient = new MongoClient( host, port );
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         ratings = database.getCollection(ratingsCollectionName);
@@ -43,7 +38,7 @@ public class RatingDataOperator {
     public void createRating(Document doc) {
 
         Integer userId = doc.getInteger("user_id");
-        Integer collectionId = doc.getInteger("collection_id");
+        String collectionId = doc.getString("collection_id");
         Integer postId = doc.getInteger("post_id");
 
         Bson updateOperation = set("rating", doc.get("rating"));
@@ -102,4 +97,29 @@ public class RatingDataOperator {
 
     }
 
+    /**
+     * Delete all post ratings from collection
+     * @param collectionId id of collection
+     * @param postId id of post
+     */
+    public void deletePostRatingsFromCollection(String collectionId, Integer postId) {
+        ratings.deleteMany(and(eq("collection_id", collectionId), eq("post_id", postId)));
+    }
+
+    /**
+     * Find rating
+     * @param collectionId  collection id in which the post was rated
+     * @param postId post id
+     * @param userId user id who rate post
+     * @return return Json with rating
+     */
+    public Document findRating(String collectionId, Integer postId, Integer userId) {
+        return ratings.find(
+                and(
+                        eq("collection_id", collectionId),
+                        eq("post_id", postId),
+                        eq("user_id", userId)
+                )
+        ).first();
+    }
 }

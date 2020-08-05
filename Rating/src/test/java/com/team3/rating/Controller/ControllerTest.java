@@ -7,9 +7,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
@@ -20,13 +23,21 @@ public class ControllerTest {
 
     private RestTemplate restTemplate = new RestTemplate();
 
+    private static final String TEST_COLLECTION_ID = "1";
+    private static final Integer TEST_POST_ID = 33;
+    private static final String GOOD_TOKEN = "1";
+    private static final String BAD_TOKEN = "very_bad";
+
+    @Value("${server.port}")
+    private String PORT;
+
     @Autowired
     RatingDataOperator ratingDataOperator;
 
     @Test
     @DisplayName("Rate post")
     public void rate() throws URISyntaxException {
-        String url = "http://localhost:8080/rating/";
+        String url = "http://localhost:" + PORT + "/rating/";
         URI uri = new URI(url);
 
         Document requestBody = new Document("collection_id", 21659)
@@ -54,15 +65,30 @@ public class ControllerTest {
                 requestBody.getInteger("post_id"), requestBody.getInteger("user_id"));
     }
 
-    /*@Test
-    @DisplayName("Getting test by criterion")
-    public void getRatingByCriterion() throws URISyntaxException {
-        String url = "http://localhost:8080/rating/collections/11/posts/12/users/3/criterion/55";
-
+    @Test
+    @DisplayName("Delete post ratings from collection")
+    void deletePostRatings() throws URISyntaxException {
+        // Uri for request
+        String url = "http://localhost:" + PORT + "/rating/collections/" + TEST_COLLECTION_ID +
+                "/posts/" + TEST_POST_ID + "/token/" + GOOD_TOKEN;
         URI uri = new URI(url);
-        ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
 
+        ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class);
+
+        // Check Http status code
         Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
-        Assertions.assertEquals("11,12,3", result.getBody());
-    }*/
+    }
+
+    @Test
+    @DisplayName("Not rights to delete post ratings from collection")
+    void deletePostRatingsNotAccess() throws URISyntaxException {
+        // Uri for request
+        String url = "http://localhost:" + PORT + "/rating/collections/" + TEST_COLLECTION_ID +
+                "/posts/" + TEST_POST_ID + "/token/" + BAD_TOKEN;
+        URI uri = new URI(url);
+
+        // Try to make request and check Http status code
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
+                () -> restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class));
+    }
 }
