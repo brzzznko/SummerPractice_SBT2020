@@ -8,7 +8,7 @@ paths:
     post:
       tags:
         - "Rate"
-      summary: "Rate/edit post"
+      summary: "Rate post / edit rating"
       description: ""
       requestBody:
         required: true
@@ -36,15 +36,15 @@ paths:
                 token:
                   type: "string"
             example:
-              collectionID: 216599
-              postID: 46161651
-              userID: 789816
+              collection_id: "216599"
+              post_id: 46161651
+              user_id: 789816
               rating: {"Качество" : 5, "Цена" : 3, "Внешний вид" : 4}
               token: "ff48d4fv64d45df1v41db781t7g"
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Error"
@@ -175,7 +175,7 @@ paths:
                     type: "integer"
                     format: "int64"
               example:
-                "postRating" : 7
+                "post_rating" : 7
         404:
           description: "Error"
   
@@ -210,7 +210,7 @@ paths:
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Error"
@@ -240,7 +240,7 @@ paths:
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Error"
@@ -275,7 +275,7 @@ paths:
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Error"
