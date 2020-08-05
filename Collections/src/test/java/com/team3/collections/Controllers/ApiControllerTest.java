@@ -65,7 +65,7 @@ public class ApiControllerTest {
         URI uri = new URI(url);
 
         // Try to make request and check Http status code
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
                 () -> restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class));
     }
 
@@ -91,7 +91,7 @@ public class ApiControllerTest {
         URI uri = new URI(url);
 
         // Try to make request and check Http status code
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
                 () -> restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class));
     }
 
@@ -115,7 +115,7 @@ public class ApiControllerTest {
         URI uri = new URI(url);
 
         // Try to make request and check Http status code
-        Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
+        Assertions.assertThrows(HttpClientErrorException.Unauthorized.class,
                 () -> restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class));
     }
 

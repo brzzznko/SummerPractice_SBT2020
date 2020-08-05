@@ -31,7 +31,7 @@ public class ApiController {
             collectionsDataOperator.deleteCollection(collectionId);
         }
         else {
-            return new ResponseEntity<>("Not enough rights", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -55,7 +55,7 @@ public class ApiController {
             collectionsDataOperator.deletePostFromCollection(collectionId, postId);
         }
         else {
-            return new ResponseEntity<>("Not enough rights", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -71,7 +71,7 @@ public class ApiController {
             collectionsDataOperator.deletePostFromAllCollection(postId);
         }
         else {
-            return new ResponseEntity<>("Not enough rights", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
         }
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
