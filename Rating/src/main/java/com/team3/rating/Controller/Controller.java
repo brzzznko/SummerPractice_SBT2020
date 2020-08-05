@@ -31,10 +31,10 @@ public class Controller {
 
 
     @GetMapping("/collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
-    public Integer getRatingByCriterion(@PathVariable Integer collectionID,
-                                    @PathVariable Integer postID,
-                                    @PathVariable Integer userID,
-                                    @PathVariable String criterionName) {
+    public Integer getRatingByCriterion(@PathVariable String collectionID,
+                                        @PathVariable Integer postID,
+                                        @PathVariable Integer userID,
+                                        @PathVariable String criterionName) {
 
         return ratingDataOperator.findRating(userID, collectionID, postID, criterionName);
     }
