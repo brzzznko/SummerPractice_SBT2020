@@ -118,4 +118,29 @@ public class ApiControllerTest {
         Assertions.assertThrows(HttpClientErrorException.Forbidden.class,
                 () -> restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class));
     }
+
+    @Test
+    @DisplayName("Get posts of collection. OK")
+    void getPosts() throws URISyntaxException {
+        // Uri for request
+        String url = "http://localhost:" + PORT + "/collections/" + TEST_COLLECTION_ID + "/posts";
+        URI uri = new URI(url);
+
+        ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
+
+        // Check Http status code
+        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("Get posts of collection. Not Found (no collection)")
+    void getPostsNoCollection() throws URISyntaxException {
+        // Uri for request
+        String url = "http://localhost:" + PORT + "/collections/" + TEST_COLLECTION_ID + "not_exist" + "/posts";
+        URI uri = new URI(url);
+
+        // Try to make request and check Http status code
+        Assertions.assertThrows(HttpClientErrorException.NotFound.class,
+                () -> restTemplate.getForEntity(uri, String.class));
+    }
 }

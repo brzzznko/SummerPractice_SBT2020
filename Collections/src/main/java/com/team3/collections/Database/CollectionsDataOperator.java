@@ -8,6 +8,8 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.pull;
 
@@ -66,8 +68,28 @@ public class CollectionsDataOperator {
         collection.updateOne(eq("collection_id", collectionId), updateOperation);
     }
 
+    /**
+     * Delete post from all collections
+     * @param postId id of post to remove
+     */
     public void deletePostFromAllCollection(Integer postId) {
         Bson updateOperation = pull("posts", postId);
         collection.updateMany(eq("posts", postId), updateOperation);
+    }
+
+    /**
+     * Get posts in collection
+     * @param collectionId id of collection
+     * @return List of posts IDs
+     */
+    public ArrayList<Integer> getPosts(String collectionId) {
+        // Try to find collection
+        Document found = collection.find(eq("collection_id", collectionId)).first();
+        // If no collection, return null
+        if(found == null)
+            return null;
+
+        // Return posts list
+        return new ArrayList<>(found.getList("posts", Integer.class));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest
@@ -175,5 +176,66 @@ public class CollectionsDataOperatorTest {
             // Delete collection
             collectionsDataOperator.deleteCollection(colletionId);
         }
+    }
+
+    @Test
+    @DisplayName("Get posts of collection")
+    void getPosts() {
+        // Add test doc
+        Document doc = new Document("collection_id", "56")
+                .append("owner_id", 35)
+                .append("name", "Груши")
+                .append("description", "Сравнение")
+                .append("posts", Arrays.asList(13, 886, 32))
+                .append("criterion", Arrays.asList("Вкус", "Цена"));
+        collectionsDataOperator.insertJson(doc);
+
+        String collectionId = doc.getString("collection_id");
+
+        // Get posts list
+        List<Integer> posts = new ArrayList<>(doc.getList("posts", Integer.class));
+        List<Integer> postsTest = collectionsDataOperator.getPosts(collectionId);
+
+        Assertions.assertEquals(posts, postsTest);
+
+        // Delete test doc
+        collectionsDataOperator.deleteCollection(collectionId);
+    }
+
+    @Test
+    @DisplayName("Get posts of collection, that has no posts")
+    void getZeroPosts() {
+        // Add test doc
+        Document doc = new Document("collection_id", "0001")
+                .append("owner_id", 35)
+                .append("name", "Груши")
+                .append("description", "Сравнение")
+                .append("posts", Collections.emptyList())
+                .append("criterion", Arrays.asList("Вкус", "Цена"));
+        collectionsDataOperator.insertJson(doc);
+
+        String collectionId = doc.getString("collection_id");
+
+        // Get posts list
+        List<Integer> posts = new ArrayList<>(doc.getList("posts", Integer.class));
+        List<Integer> postsTest = collectionsDataOperator.getPosts(collectionId);
+
+        Assertions.assertEquals(posts, postsTest);
+
+        // Delete test doc
+        collectionsDataOperator.deleteCollection(collectionId);
+    }
+
+    @Test
+    @DisplayName("Get posts of not existing collection, return null")
+    void getPostsFromNotExistingCollection() {
+        // Get posts list
+        String collectionId = "not_exist";
+        List<Integer> postsTest = collectionsDataOperator.getPosts(collectionId);
+
+        Assertions.assertNull(postsTest);
+
+        // Delete test doc
+        collectionsDataOperator.deleteCollection(collectionId);
     }
 }

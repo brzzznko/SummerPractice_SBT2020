@@ -1,13 +1,13 @@
 package com.team3.collections.Controllers;
 
 import com.team3.collections.Database.CollectionsDataOperator;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("collections")
@@ -75,5 +75,16 @@ public class ApiController {
         }
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
+
+    @GetMapping("/{collectionID}/posts")
+    public ResponseEntity<Document> getPosts(@PathVariable("collectionID") String collectionId) {
+        List<Integer> posts = collectionsDataOperator.getPosts(collectionId);
+
+        if(posts == null) {
+            return new ResponseEntity<>(new Document("response", "Collection not found"), HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(new Document("posts", posts), HttpStatus.OK);
     }
 }
