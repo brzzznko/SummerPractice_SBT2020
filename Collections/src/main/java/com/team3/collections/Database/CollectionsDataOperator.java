@@ -97,12 +97,14 @@ public class CollectionsDataOperator {
     /**
      * Adding a post to a collection
      * */
-    public void addPost(String idCollection, String idPost){
+    public void addPost(String idCollection, String idPost) {
         UpdateResult updateResult = collection.updateOne(
                 Filters.eq("collection_id", idCollection),
                 new BsonDocument("$push", new BsonDocument("posts", new BsonString(idPost)))
         );
-
+    }
+    
+    /**
      * Delete post from collection
      * @param collectionId id of collection
      * @param postId id of post
