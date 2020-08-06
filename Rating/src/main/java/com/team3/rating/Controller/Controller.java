@@ -156,4 +156,29 @@ public class Controller {
             return new ResponseEntity<>(new Document("average_rating", rating), HttpStatus.OK);
         }
     }
+
+    /**
+     * Delete all specific post ratings from specific collection
+     * @param collectionId id of collection
+     * @param postId id of post
+     * @param token user access token
+     * @return Http Status code
+     */
+    @DeleteMapping("/collections/{collectionID}/posts/{postID}/token/{token}")
+    public ResponseEntity<String> deletePostRatings(@PathVariable("collectionID") String collectionId,
+                                                    @PathVariable("postID") String postId,
+                                                    @PathVariable("token") String token) {
+
+        // !!! Need to do check with auth service
+        boolean canDeleteRating = token.equals("1");
+
+        if (canDeleteRating) {
+            ratingDataOperator.deletePostRatingsFromCollection(collectionId, postId);
+        }
+        else {
+            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
 }

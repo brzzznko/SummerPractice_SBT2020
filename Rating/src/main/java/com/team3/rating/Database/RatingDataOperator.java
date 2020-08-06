@@ -29,9 +29,7 @@ public class RatingDataOperator {
                               @Value("${mongodb.databaseName}")  String databaseName,
                               @Value("${mongodb.ratingsCollectionName}")  String ratingsCollectionName,
                               @Value("${mongodb.averageRatingsCollectionName}")  String averageRatingsCollectionName) {
-        /**
-         * Connection to MongoDb
-         */
+        // connection to mongoDB
         MongoClient mongoClient = new MongoClient( host, port );
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         ratings = database.getCollection(ratingsCollectionName);
@@ -147,5 +145,14 @@ public class RatingDataOperator {
             return null;
 
         return found.getInteger("average_rating");
+    }
+
+    /**
+     * Delete all post ratings from collection
+     * @param collectionId id of collection
+     * @param postId id of post
+     */
+    public void deletePostRatingsFromCollection(String collectionId, String postId) {
+        ratings.deleteMany(and(eq("collection_id", collectionId), eq("post_id", postId)));
     }
 }
