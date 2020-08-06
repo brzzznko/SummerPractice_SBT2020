@@ -48,7 +48,7 @@ public class ApiController {
      */
     @DeleteMapping("/{collectionID}/post/{postID}/token/{token}")
     public ResponseEntity<String> deletePostFromCollection(@PathVariable("collectionID") String collectionId,
-                                                           @PathVariable("postID") Integer postId,
+                                                           @PathVariable("postID") String postId,
                                                            @PathVariable("token") String token) {
         // !!! Need to do check with auth service
         boolean canDeletePost = token.equals("1");
@@ -64,7 +64,7 @@ public class ApiController {
     }
 
     @DeleteMapping("/post/{postID}/token/{token}")
-    public ResponseEntity<String> deletePostFromAllCollection(@PathVariable("postID") Integer postId,
+    public ResponseEntity<String> deletePostFromAllCollection(@PathVariable("postID") String postId,
                                                               @PathVariable("token") String token) {
         // !!! Need to do check with auth service
         boolean canDeletePost = token.equals("1");
@@ -81,7 +81,7 @@ public class ApiController {
 
     @GetMapping("/{collectionID}/posts")
     public ResponseEntity<Document> getPosts(@PathVariable("collectionID") String collectionId) {
-        List<Integer> posts = collectionsDataOperator.getPosts(collectionId);
+        List<String> posts = collectionsDataOperator.getPosts(collectionId);
 
         if(posts == null) {
             return new ResponseEntity<>(new Document("response", "Collection not found"), HttpStatus.NOT_FOUND);
@@ -161,9 +161,9 @@ public class ApiController {
     }
 
     @DeleteMapping("/posts/token/{token}")
-    public ResponseEntity<String> deleteListPostsFromCollections(@RequestParam("postsList") List<Integer> postsList,
+    public ResponseEntity<String> deleteListPostsFromCollections(@RequestParam("postsList") List<String> postsList,
                                                                  @PathVariable("token") String token) {
-        for(Integer post : postsList) {
+        for(String post : postsList) {
             boolean canDeleteListPosts = token.equals("1");
             if (canDeleteListPosts) {
                 collectionsDataOperator.deletePostFromAllCollection(post);

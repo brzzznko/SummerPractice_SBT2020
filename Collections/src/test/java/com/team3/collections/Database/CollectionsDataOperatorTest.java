@@ -21,7 +21,7 @@ public class CollectionsDataOperatorTest {
             .append("owner_id", 35)
             .append("name", "Груши")
             .append("description", "Сравнение")
-            .append("posts", Arrays.asList(13, 886, 32))
+            .append("posts", Arrays.asList("13", "886", "32"))
             .append("criterion", Arrays.asList("Вкус", "Цена"));
 
     @Test
@@ -82,7 +82,7 @@ public class CollectionsDataOperatorTest {
                 .append("owner_id", 35)
                 .append("name", "Груши")
                 .append("description", "Сравнение")
-                .append("posts", Arrays.asList(13, 886, 32))
+                .append("posts", Arrays.asList("13", "886", "32"))
                 .append("criterion", Arrays.asList("Вкус", "Цена"));
 
         collectionsDataOperator.insertJson(testPostDeleting);
@@ -90,7 +90,7 @@ public class CollectionsDataOperatorTest {
         String collectionId = testPostDeleting.getString("collection_id");
 
         // Get posts list
-        List<Integer> posts = new ArrayList<>(testDoc.getList("posts", Integer.class));
+        List<String> posts = new ArrayList<>(testDoc.getList("posts", String.class));
 
         // Remove post
         int indexForRemove = 0;
@@ -99,7 +99,7 @@ public class CollectionsDataOperatorTest {
 
         // Check that post was removed
         Document collection = collectionsDataOperator.findCollection(collectionId);
-        List<Integer> postsAfter = collection.getList("posts", Integer.class);
+        List<String> postsAfter = collection.getList("posts", String.class);
 
         Assertions.assertEquals(posts, postsAfter);
 
@@ -115,7 +115,7 @@ public class CollectionsDataOperatorTest {
                 .append("owner_id", 35)
                 .append("name", "Груши")
                 .append("description", "Сравнение")
-                .append("posts", Arrays.asList(13, 886, 32))
+                .append("posts", Arrays.asList("13", "886", "32"))
                 .append("criterion", Arrays.asList("Вкус", "Цена"));
 
         collectionsDataOperator.insertJson(testPostDeleting);
@@ -123,15 +123,15 @@ public class CollectionsDataOperatorTest {
         String collectionId = testPostDeleting.getString("collection_id");
 
         // Get posts list
-        List<Integer> posts = new ArrayList<>(testDoc.getList("posts", Integer.class));
+        List<String> posts = new ArrayList<>(testDoc.getList("posts", String.class));
 
         // Remove post
-        int postForRemove = 0;
+        String postForRemove = "0";
         collectionsDataOperator.deletePostFromCollection(collectionId, postForRemove);
 
         // Check that post was removed
         Document collection = collectionsDataOperator.findCollection(collectionId);
-        List<Integer> postsAfter = collection.getList("posts", Integer.class);
+        List<String> postsAfter = collection.getList("posts", String.class);
 
         Assertions.assertEquals(posts, postsAfter);
 
@@ -142,9 +142,9 @@ public class CollectionsDataOperatorTest {
     @Test
     @DisplayName("Delete post from all collection")
     void deletePostFromAllCollection() {
-        Integer postId = 1;
+        String postId = "1";
         String colletionId = "56";
-        List<Integer> posts = Arrays.asList(110, postId, 13, 886, 32);
+        List<String> posts = Arrays.asList("110", postId, "13", "886", "32");
 
         Document testPostDeleting = new Document("collection_id", colletionId)
                 .append("owner_id", 35)
@@ -170,7 +170,7 @@ public class CollectionsDataOperatorTest {
 
             // check
             Document afterDeleting = collectionsDataOperator.findCollection(colletionId);
-            List<Integer> postsAfter = afterDeleting.getList("posts", Integer.class);
+            List<String> postsAfter = afterDeleting.getList("posts", String.class);
             Assertions.assertNotEquals(posts, postsAfter);
 
             // Delete collection
@@ -186,15 +186,15 @@ public class CollectionsDataOperatorTest {
                 .append("owner_id", 35)
                 .append("name", "Груши")
                 .append("description", "Сравнение")
-                .append("posts", Arrays.asList(13, 886, 32))
+                .append("posts", Arrays.asList("13", "886", "32"))
                 .append("criterion", Arrays.asList("Вкус", "Цена"));
         collectionsDataOperator.insertJson(doc);
 
         String collectionId = doc.getString("collection_id");
 
         // Get posts list
-        List<Integer> posts = new ArrayList<>(doc.getList("posts", Integer.class));
-        List<Integer> postsTest = collectionsDataOperator.getPosts(collectionId);
+        List<String> posts = new ArrayList<>(doc.getList("posts", String.class));
+        List<String> postsTest = collectionsDataOperator.getPosts(collectionId);
 
         Assertions.assertEquals(posts, postsTest);
 
@@ -217,8 +217,8 @@ public class CollectionsDataOperatorTest {
         String collectionId = doc.getString("collection_id");
 
         // Get posts list
-        List<Integer> posts = new ArrayList<>(doc.getList("posts", Integer.class));
-        List<Integer> postsTest = collectionsDataOperator.getPosts(collectionId);
+        List<String> posts = new ArrayList<>(doc.getList("posts", String.class));
+        List<String> postsTest = collectionsDataOperator.getPosts(collectionId);
 
         Assertions.assertEquals(posts, postsTest);
 
@@ -231,7 +231,7 @@ public class CollectionsDataOperatorTest {
     void getPostsFromNotExistingCollection() {
         // Get posts list
         String collectionId = "not_exist";
-        List<Integer> postsTest = collectionsDataOperator.getPosts(collectionId);
+        List<String> postsTest = collectionsDataOperator.getPosts(collectionId);
 
         Assertions.assertNull(postsTest);
 
