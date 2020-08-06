@@ -155,4 +155,15 @@ public class RatingDataOperator {
     public void deletePostRatingsFromCollection(String collectionId, String postId) {
         ratings.deleteMany(and(eq("collection_id", collectionId), eq("post_id", postId)));
     }
+
+    public Integer getAveragePostRatingByCriterion(String collectionId, String postId, String criterionName) {
+        Document found =  averageRatings.find(and(
+                eq("post_id", postId), eq("collection_id", collectionId)
+        )).first();
+
+        if (found == null)
+            return null;
+
+        return ((Document) found.get("average_rating_by_criterion")).getInteger(criterionName);
+    }
 }

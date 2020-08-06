@@ -181,4 +181,18 @@ public class Controller {
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
+
+    @GetMapping("/average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}")
+    public ResponseEntity<Document> getAveragePostRatingByCriterion(@PathVariable("collectionID") String collectionId,
+                                                                    @PathVariable("postID") String postId,
+                                                                    @PathVariable("criterionName") String criterionName){
+
+        Integer rating = ratingDataOperator.getAveragePostRatingByCriterion(collectionId, postId, criterionName);
+        if(rating == null) {
+            return  new ResponseEntity<>(new Document("response", "Not Found"), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(new Document(criterionName, rating), HttpStatus.OK);
+        }
+    }
 }
