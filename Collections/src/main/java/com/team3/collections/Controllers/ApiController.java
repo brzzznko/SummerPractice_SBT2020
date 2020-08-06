@@ -122,7 +122,7 @@ public class ApiController {
     }
 
     @GetMapping("/users/{userID}/token/{token}")
-    public ResponseEntity<Document> getCollectionsUser(@PathVariable("userID") String userID,
+    public ResponseEntity<Document> getCollectionsUser(@PathVariable("userID") Integer userID,
                                                        @PathVariable("token") String token){
         String currentToken = token;
         if (true) {

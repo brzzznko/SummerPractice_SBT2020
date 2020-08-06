@@ -78,7 +78,7 @@ public class CollectionsDataOperator {
     /**
      * Getting a list of collections owned by a user
      */
-    public Document getListCollectionsUser(String idUser){
+    public Document getListCollectionsUser(Integer idUser){
         ArrayList<String> listId = new ArrayList<>();
         for (Document cur : collection.find(eq("owner_id", idUser))){
             listId.add(cur.getString("collection_id"));
