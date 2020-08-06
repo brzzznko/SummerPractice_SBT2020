@@ -52,6 +52,50 @@ public class Controller {
 
 
     private void calculateAverageRating(String requestBody){
+        Document reqBody = Document.parse(requestBody);
+        Document doc = (Document)reqBody.get("rating");
+
+        String collectionId = reqBody.getString("collection_id");
+        String postId = reqBody.getString("post_id");
+
+        Set<String> criterion = doc.keySet();
+        MongoCursor<Document> cursor = ratingDataOperator.findAllRating(collectionId, postId);
+
+        Integer countOfRatings;
+        HashMap<String, Float> averageRating = new HashMap<>();
+
+        countOfRatings = 0;
+        try {
+            if (cursor.hasNext()) {
+                do {
+                    Document cur = cursor.next();
+                    for (String criterionName : criterion) {
+                        averageRating.put(criterionName, averageRating.getOrDefault(criterionName, 0f) +
+                                ((Document) cur.get("rating")).getInteger(criterionName));
+                    }
+                    countOfRatings++;
+                } while (cursor.hasNext());
+            }
+            for (String criterionName : criterion){
+                averageRating.put(criterionName, averageRating.get(criterionName) / countOfRatings);
+            }
+        } finally {
+                cursor.close();
+        }
+
+        Float averageRatingByPost = 0f;
+        for (String criterionName : criterion) {
+            averageRatingByPost += averageRating.get(criterionName);
+        }
+        averageRatingByPost /= criterion.size();
+
+        Document document = new Document("collection_id", collectionId)
+                .append("post_id", postId)
+                .append("average_rating", averageRatingByPost)
+                .append("average_rating_by_criterion", averageRating);
+
+        ratingDataOperator.createAverageRating(document);
+    }
 
 
     /**
