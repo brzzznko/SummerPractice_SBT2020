@@ -102,4 +102,12 @@ public class RatingDataOperator {
 
     }
 
+    public void deletePostRatings(Integer postId) {
+        ratings.deleteMany(eq("post_id", postId));
+    }
+
+    public void deletePostAverageRatings(Integer postId) {
+        averageRatings.deleteMany(eq("post_id", postId));
+    }
+
 }

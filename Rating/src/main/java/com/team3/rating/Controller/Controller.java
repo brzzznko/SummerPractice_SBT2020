@@ -4,7 +4,10 @@ import com.team3.rating.Database.RatingDataOperator;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("rating")
@@ -53,5 +56,17 @@ public class Controller {
         return true;
     }
 
+    @DeleteMapping("collections/posts/token/{token}")
+    public ResponseEntity<String> deleteAllpostsRatings(@RequestParam("postsList") List<Integer> postsList,
+                                                        @PathVariable("token") String token) {
+        for(Integer post : postsList) {
+            boolean canDeleteAllPostsAllRatings = token.equals("1");
+            if (canDeleteAllPostsAllRatings) {
+                ratingDataOperator.deletePostRatings(post);
+                ratingDataOperator.deletePostAverageRatings(post);
+            }
+        }
 
+        return new ResponseEntity<>("OK", HttpStatus.OK);
+    }
 }
