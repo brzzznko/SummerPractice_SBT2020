@@ -57,7 +57,7 @@ public class Controller {
      */
     @DeleteMapping("collections/posts/{postID}/token/{token}")
     public ResponseEntity<String> deleteAllPostRatings(@PathVariable("token") String token,
-                                                       @PathVariable("postID") Integer postId) {
+                                                       @PathVariable("postID") String postId) {
         boolean canDeleteAllPostRatings = token.equals("1");
         if (canDeleteAllPostRatings) {
             ratingDataOperator.deletePostRatings(postId);
@@ -76,9 +76,9 @@ public class Controller {
      * @return http status code
      */
     @DeleteMapping("collections/posts/token/{token}")
-    public ResponseEntity<String> deleteAllpostsRatings(@RequestParam("postsList") List<Integer> postsList,
+    public ResponseEntity<String> deleteAllpostsRatings(@RequestParam("postsList") List<String> postsList,
                                                         @PathVariable("token") String token) {
-        for(Integer post : postsList) {
+        for(String post : postsList) {
             boolean canDeleteAllPostsAllRatings = token.equals("1");
             if (canDeleteAllPostsAllRatings) {
                 ratingDataOperator.deletePostRatings(post);
@@ -97,7 +97,7 @@ public class Controller {
      */
     @GetMapping("/average/collections/{collectionID}/posts/{postID}")
     public ResponseEntity<Document> getAveragePostRating(@PathVariable("collectionID") String collectionId,
-                                                         @PathVariable("postID") Integer postId){
+                                                         @PathVariable("postID") String postId){
 
         Integer rating = ratingDataOperator.getAveragePostRating(collectionId, postId);
         if(rating == null) {

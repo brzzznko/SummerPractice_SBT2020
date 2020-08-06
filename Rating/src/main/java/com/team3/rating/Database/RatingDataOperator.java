@@ -98,11 +98,11 @@ public class RatingDataOperator {
 
     }
 
-    public void deletePostRatings(Integer postId) {
+    public void deletePostRatings(String postId) {
         ratings.deleteMany(eq("post_id", postId));
     }
 
-    public void deletePostAverageRatings(Integer postId) {
+    public void deletePostAverageRatings(String postId) {
         averageRatings.deleteMany(eq("post_id", postId));
     }
 
@@ -112,7 +112,7 @@ public class RatingDataOperator {
      * @param postId id of post
      * @return integer average rating
      */
-    public Integer getAveragePostRating(String collectionId, Integer postId) {
+    public Integer getAveragePostRating(String collectionId, String postId) {
         Document found =  averageRatings.find(and(
                 eq("post_id", postId), eq("collection_id", collectionId)
         )).first();
