@@ -49,13 +49,32 @@ public class Controller {
         return new Document("цена:" , 5).toJson();
     }
 
-
+    /**
+     * * Delete all post ratings and all post average rating
+     * @param token user access token
+     * @param postId id of posts that we want to remove rating
+     * @return http status code
+     */
     @DeleteMapping("collections/posts/{postID}/token/{token}")
-    public boolean deleteAllPostRatings(@PathVariable String token,
-                                        @PathVariable Integer postID) {
-        return true;
+    public ResponseEntity<String> deleteAllPostRatings(@PathVariable("token") String token,
+                                                       @PathVariable("postID") Integer postId) {
+        boolean canDeleteAllPostRatings = token.equals("1");
+        if (canDeleteAllPostRatings) {
+            ratingDataOperator.deletePostRatings(postId);
+            ratingDataOperator.deletePostAverageRatings(postId);
+        }
+        else {
+            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
+    /**
+     * Delete all post ratings and all post average rating
+     * @param postsList list of posts that we want to remove rating
+     * @param token user access token
+     * @return http status code
+     */
     @DeleteMapping("collections/posts/token/{token}")
     public ResponseEntity<String> deleteAllpostsRatings(@RequestParam("postsList") List<Integer> postsList,
                                                         @PathVariable("token") String token) {
