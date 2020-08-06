@@ -1,5 +1,6 @@
 package com.team3.rating.Controller;
 
+import com.mongodb.client.MongoCursor;
 import com.team3.rating.Database.RatingDataOperator;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.print.Doc;
+import java.util.*;
 
 @RestController
 @RequestMapping("rating")
@@ -16,38 +18,41 @@ public class Controller {
     private RatingDataOperator ratingDataOperator;
 
     @PostMapping("/")
-    public HttpStatus ratePost(@RequestBody Document requestBody) {
+    public ResponseEntity<String> ratePost(@RequestBody Document requestBody) {
         try {
             String currentToken = requestBody.getString("token");
             if (true) {
                 requestBody.remove("token");
                 ratingDataOperator.createRating(requestBody);
+                calculateAverageRating(requestBody.toJson());
             } else {
-                return HttpStatus.UNAUTHORIZED;
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
-            return HttpStatus.BAD_REQUEST;
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return HttpStatus.OK;
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 
     @GetMapping("collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
-    public Integer getRatingByCriterion(@PathVariable Integer collectionID,
-                                    @PathVariable Integer postID,
-                                    @PathVariable Integer userID,
+    public ResponseEntity<Integer> getRatingByCriterion(@PathVariable String collectionID,
+                                    @PathVariable String postID,
+                                    @PathVariable String userID,
                                     @PathVariable String criterionName) {
+        Integer rating;
+        try {
+            rating = ratingDataOperator.findRating(userID, collectionID, postID, criterionName);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
-        return ratingDataOperator.findRating(userID, collectionID, postID, criterionName);
+        return new ResponseEntity<>(rating, HttpStatus.OK);
     }
 
 
-    @GetMapping("average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}")
-    public String getAverageRatingByCriterion(@PathVariable Integer collectionID,
-                                              @PathVariable Integer postID,
-                                              @PathVariable String criterionName) {
-        return new Document("цена:" , 5).toJson();
-    }
+    private void calculateAverageRating(String requestBody){
+
 
     /**
      * * Delete all post ratings and all post average rating
@@ -98,7 +103,7 @@ public class Controller {
     @GetMapping("/average/collections/{collectionID}/posts/{postID}")
     public ResponseEntity<Document> getAveragePostRating(@PathVariable("collectionID") String collectionId,
                                                          @PathVariable("postID") String postId){
-
+      
         Integer rating = ratingDataOperator.getAveragePostRating(collectionId, postId);
         if(rating == null) {
             return  new ResponseEntity<>(new Document("response", "Not Found"), HttpStatus.NOT_FOUND);
