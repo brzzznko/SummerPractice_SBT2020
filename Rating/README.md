@@ -18,3 +18,8 @@ If you need to run app with specific port. You can change it in \Rating\src\main
 ```java
     server.port=8080
 ```
+You also can change MongoDB host IP and port in \Rating\src\main\resources\application.properties.
+```java
+    mongodb.host=localhost
+    mongodb.port=27017
+```

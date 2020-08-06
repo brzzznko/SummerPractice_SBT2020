@@ -14,7 +14,12 @@ It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase
     cd target
     java -jar collections-0.0.1-SNAPSHOT.jar
 ```
-If you need to run app with specific port. You can change it in \Rating\src\main\resources\application.properties. Just change field server.port:
+If you need to run app with specific port. You can change it in \Collections\src\main\resources\application.properties. Just change field server.port:
 ```java
     server.port=8081
+```
+You also can change MongoDB host IP and port in \Collections\src\main\resources\application.properties.
+```java
+    mongodb.host=localhost
+    mongodb.port=27017
 ```
