@@ -16,7 +16,7 @@ class RatingDataOperatorTest {
     @DisplayName("Delete all post rating from collection")
     void deletePostRatingsFromCollection() {
         String COLLECTION_ID = "1";
-        int POST_ID = 1;
+        String POST_ID = "1";
         int user_id = 1;
 
         // Add test docs
@@ -29,7 +29,7 @@ class RatingDataOperatorTest {
         }
 
         // Remove
-        ratingDataOperator.deletePostRatingsFromCollection("1", 1);
+        ratingDataOperator.deletePostRatingsFromCollection("1", "1");
 
         while(user_id > 1) {
             user_id -= 1;

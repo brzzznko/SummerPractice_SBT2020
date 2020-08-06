@@ -32,7 +32,7 @@ public class Controller {
 
     @GetMapping("/collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
     public Integer getRatingByCriterion(@PathVariable String collectionID,
-                                        @PathVariable Integer postID,
+                                        @PathVariable String postID,
                                         @PathVariable Integer userID,
                                         @PathVariable String criterionName) {
 
@@ -56,7 +56,7 @@ public class Controller {
      */
     @DeleteMapping("/collections/{collectionID}/posts/{postID}/token/{token}")
     public ResponseEntity<String> deletePostRatings(@PathVariable("collectionID") String collectionId,
-                                                    @PathVariable("postID") Integer postId,
+                                                    @PathVariable("postID") String postId,
                                                     @PathVariable("token") String token) {
 
         // !!! Need to do check with auth service

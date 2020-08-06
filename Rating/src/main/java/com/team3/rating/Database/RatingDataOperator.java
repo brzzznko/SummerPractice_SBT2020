@@ -57,7 +57,7 @@ public class RatingDataOperator {
     /**
      * Findes rating by criterion
      */
-    public Integer findRating(Integer userId, String collectionId, Integer postId, String criterionName){
+    public Integer findRating(Integer userId, String collectionId, String postId, String criterionName){
         Document response = ratings.find(
                 and(
                         eq("collection_id", collectionId),
@@ -72,7 +72,7 @@ public class RatingDataOperator {
     /**
      * Delete document from db
      */
-    public void deleteData(String collectionId, Integer postId, Integer userId) {
+    public void deleteData(String collectionId, String postId, Integer userId) {
         ratings.deleteOne(and(
                 eq("collection_id", collectionId),
                 eq("post_id", postId),
@@ -102,7 +102,7 @@ public class RatingDataOperator {
      * @param collectionId id of collection
      * @param postId id of post
      */
-    public void deletePostRatingsFromCollection(String collectionId, Integer postId) {
+    public void deletePostRatingsFromCollection(String collectionId, String postId) {
         ratings.deleteMany(and(eq("collection_id", collectionId), eq("post_id", postId)));
     }
 
@@ -113,7 +113,7 @@ public class RatingDataOperator {
      * @param userId user id who rate post
      * @return return Json with rating
      */
-    public Document findRating(String collectionId, Integer postId, Integer userId) {
+    public Document findRating(String collectionId, String postId, Integer userId) {
         return ratings.find(
                 and(
                         eq("collection_id", collectionId),
