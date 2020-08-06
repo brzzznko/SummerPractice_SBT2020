@@ -141,7 +141,7 @@ public class ApiController {
     public ResponseEntity<String> updateCollection(@RequestBody Document bodyRequest){
         String id = bodyRequest.getString("collection_id");
         collectionsDataOperator.updateCollection(bodyRequest, id);
-        return new ResponseEntity<String>("Successful collection update!", HttpStatus.OK);
+        return new ResponseEntity<>("Successful collection update!", HttpStatus.OK);
     }
 
     @PutMapping("/posts")
@@ -150,14 +150,27 @@ public class ApiController {
         if (true) {
             String idCollection = bodyRequest.getString("collection_id");
             if(idCollection == null){
-                return new ResponseEntity<String>("Not found collection ID", HttpStatus.NOT_FOUND);
+                return new ResponseEntity<>("Not found collection ID", HttpStatus.NOT_FOUND);
             }
             collectionsDataOperator.addPost(idCollection, bodyRequest.getString("post_id"));
-            return new ResponseEntity<String>("Post added to the collection.", HttpStatus.OK);
+            return new ResponseEntity<>("Post added to the collection.", HttpStatus.OK);
         } else {
-            return new ResponseEntity<String>(
+            return new ResponseEntity<>(
                     "Not enough rights to add a post to the collection", HttpStatus.UNAUTHORIZED);
         }
+    }
+
+    @DeleteMapping("/posts/token/{token}")
+    public ResponseEntity<String> deleteListPostsFromCollections(@RequestParam("postsList") List<Integer> postsList,
+                                                                 @PathVariable("token") String token) {
+        for(Integer post : postsList) {
+            boolean canDeleteListPosts = token.equals("1");
+            if (canDeleteListPosts) {
+                collectionsDataOperator.deletePostFromAllCollection(post);
+            }
+        }
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
 }
