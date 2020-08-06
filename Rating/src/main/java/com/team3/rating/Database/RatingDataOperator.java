@@ -42,8 +42,8 @@ public class RatingDataOperator {
     public void createRating(Document doc) {
 
         Integer userId = doc.getInteger("user_id");
-        Integer collectionId = doc.getInteger("collection_id");
-        Integer postId = doc.getInteger("post_id");
+        String collectionId = doc.getString("collection_id");
+        String postId = doc.getString("post_id");
 
         Bson updateOperation = set("rating", doc.get("rating"));
 
