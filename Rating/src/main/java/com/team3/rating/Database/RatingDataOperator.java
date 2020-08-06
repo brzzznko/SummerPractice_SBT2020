@@ -80,23 +80,6 @@ public class RatingDataOperator {
         ));
     }
 
-
-    /**
-     * AverageRating
-     */
-    private void updateAvarageRating(Integer collectionId, Integer postId) {
-        for (Document cur : ratings.find(
-                and(
-                    eq("collection_id", collectionId),
-                    eq("post_id", postId)
-                )
-            )
-        ){
-            /**Code*/
-        }
-
-    }
-
     /**
      * Delete all post ratings from collection
      * @param collectionId id of collection
