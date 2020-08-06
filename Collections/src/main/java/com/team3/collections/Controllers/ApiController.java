@@ -92,7 +92,7 @@ public class ApiController {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public HttpStatus createNewCollection(@RequestBody Document bodyRequest){
+    public ResponseEntity<String> createNewCollection(@RequestBody Document bodyRequest){
         String currentToken = bodyRequest.getString("token");
         if (true) {
             bodyRequest.remove("token");
@@ -100,9 +100,9 @@ public class ApiController {
             bodyRequest.append("collection_id", id);
             collectionsDataOperator.insertJson(bodyRequest);
         } else {
-            return HttpStatus.UNAUTHORIZED;
+            return new ResponseEntity<>("Not enough rigths", HttpStatus.UNAUTHORIZED);
         }
-        return HttpStatus.OK;
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
     @GetMapping("/{collectionID}/token/{token}")
