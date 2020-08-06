@@ -109,7 +109,7 @@ public class CollectionsDataOperator {
      * @param collectionId id of collection
      * @param postId id of post
      */
-    public void deletePostFromCollection(String collectionId, Integer postId) {
+    public void deletePostFromCollection(String collectionId, String postId) {
         Bson updateOperation = pull("posts", postId);
         collection.updateOne(eq("collection_id", collectionId), updateOperation);
     }
@@ -118,7 +118,7 @@ public class CollectionsDataOperator {
      * Delete post from all collections
      * @param postId id of post to remove
      */
-    public void deletePostFromAllCollection(Integer postId) {
+    public void deletePostFromAllCollection(String postId) {
         Bson updateOperation = pull("posts", postId);
         collection.updateMany(eq("posts", postId), updateOperation);
     }
@@ -128,7 +128,7 @@ public class CollectionsDataOperator {
      * @param collectionId id of collection
      * @return List of posts IDs
      */
-    public ArrayList<Integer> getPosts(String collectionId) {
+    public ArrayList<String> getPosts(String collectionId) {
         // Try to find collection
         Document found = collection.find(eq("collection_id", collectionId)).first();
         // If no collection, return null
@@ -136,6 +136,6 @@ public class CollectionsDataOperator {
             return null;
 
         // Return posts list
-        return new ArrayList<>(found.getList("posts", Integer.class));
+        return new ArrayList<>(found.getList("posts", String.class));
     }
 }
