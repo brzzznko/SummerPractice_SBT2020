@@ -21,7 +21,7 @@ public class ApiControllerTest {
     private final RestTemplate restTemplate = new RestTemplate();
 
     private static final String TEST_COLLECTION_ID = "1";
-    private static final Integer DELETING_TEST_POST_ID = 33;
+    private static final String DELETING_TEST_POST_ID = "33";
     private static final String GOOD_TOKEN = "1";
     private static final String BAD_TOKEN = "very_bad";
 
@@ -35,7 +35,7 @@ public class ApiControllerTest {
                 .append("owner_id", 2)
                 .append("name", "Яблоки")
                 .append("description", "Сравнение")
-                .append("posts", Arrays.asList(66, 78880, DELETING_TEST_POST_ID, 88))
+                .append("posts", Arrays.asList("66", "78880", DELETING_TEST_POST_ID, "88"))
                 .append("criterion", Arrays.asList("Вкус", "Цена"))
         );
     }
