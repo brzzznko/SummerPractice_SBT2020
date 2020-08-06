@@ -88,4 +88,23 @@ public class Controller {
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
+
+    /**
+     * Get post average rating
+     * @param collectionId id collection in which the post
+     * @param postId post id
+     * @return json that contain average rating
+     */
+    @GetMapping("/average/collections/{collectionID}/posts/{postID}")
+    public ResponseEntity<Document> getAveragePostRating(@PathVariable("collectionID") String collectionId,
+                                                         @PathVariable("postID") Integer postId){
+
+        Integer rating = ratingDataOperator.getAveragePostRating(collectionId, postId);
+        if(rating == null) {
+            return  new ResponseEntity<>(new Document("response", "Not Found"), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(new Document("average_rating", rating), HttpStatus.OK);
+        }
+    }
 }

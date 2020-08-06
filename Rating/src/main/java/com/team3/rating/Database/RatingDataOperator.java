@@ -9,10 +9,6 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.print.Doc;
-import java.sql.Array;
-import java.util.ArrayList;
-
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.set;
@@ -110,4 +106,20 @@ public class RatingDataOperator {
         averageRatings.deleteMany(eq("post_id", postId));
     }
 
+    /**
+     * Get post average rating in collection
+     * @param collectionId id of collection
+     * @param postId id of post
+     * @return integer average rating
+     */
+    public Integer getAveragePostRating(String collectionId, Integer postId) {
+        Document found =  averageRatings.find(and(
+                eq("post_id", postId), eq("collection_id", collectionId)
+        )).first();
+
+        if (found == null)
+            return null;
+
+        return found.getInteger("average_rating");
+    }
 }
