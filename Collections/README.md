@@ -16,5 +16,5 @@ It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase
 ```
 If you need to run app with specific port. You can change it in \Rating\src\main\resources\application.properties. Just change field server.port:
 ```java
-    server.port=8080
+    server.port=8081
 ```
