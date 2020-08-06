@@ -35,22 +35,12 @@ paths:
               token: "f57ebe597a3741b688269209fa29b053"
               name: "Чайники"
               description: "Сравнение моих чайников"
-              firstPostId: 322
+              first_post_id: 322
               criterion: ["Качество", "Цена", "Внешний вид"]
       responses:
         201:
           description: "Created"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  collectionID:  
-                    type: "integer"
-                    format: "int64"
-              example:
-                collectionID: 1455
-        403:
+        401:
           description: "Not enough rights to create the collection"
         404:
           description: "Error"
@@ -83,14 +73,14 @@ paths:
                     format: "string"
             example:
               token: "f57ebe597a3741b688269209fa29b053"
-              collectionID: 318
+              collection_id: 318
               name: "Чайники"
               description: "Сравнение моих чайников"
               criterion: ["Качество", "Цена", "Внешний вид"]
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights to create the collection"
         404:
           description: "Error"
@@ -112,7 +102,7 @@ paths:
                 properties:
                   token:
                     type: "string"
-                  collectionID:
+                  collection_id:
                     type: "integer"
                     format: "int64"
                   postID:
@@ -120,12 +110,12 @@ paths:
                     format: "int64"
               example:
                 token: "f57ebe597a3741b688269209fa29b053"
-                collectionID: 1445
+                collection_id: "1445"
                 postID: 333
         responses:
           200:
             description: "OK"
-          403:
+          401:
             description: "Not enough rights to add a post to the collection"
           404:
             description: "Error"
@@ -153,7 +143,7 @@ paths:
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Error"
@@ -186,7 +176,7 @@ paths:
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Error"
@@ -220,7 +210,6 @@ paths:
                         format: "integer"
                 example:
                   posts: [322, 333, 5, 4692]
-          
           404:
             description: "Not found"
                   
@@ -242,8 +231,7 @@ paths:
           description: "ID of collection"
           required: true
           schema:
-            type: "integer"
-            format: "int64"
+            type: "string"
         responses:
           200:
             description: "OK"
@@ -274,7 +262,7 @@ paths:
                   posts: [322, 777]
                   criterion: ["Качество", "Цена", "Внешний вид"]
                   
-          403:
+          401:
             description: "Not enough rights"
             content: {}
           
@@ -303,7 +291,7 @@ paths:
         responses:
           200:
             description: "OK"
-          403:
+          401:
             description: "Not enough rights"  
           
           404:
@@ -343,7 +331,7 @@ paths:
                         format: "integer"
               example:
                 collections: [322, 333, 5, 4692]
-        403:
+        401:
             description: "Not enough rights"
             content: {}
         
@@ -380,7 +368,7 @@ paths:
       responses:
         200:
           description: "OK"
-        403:
+        401:
           description: "Not enough rights"
         404:
           description: "Non-existing token or non-existing ID post or ID collection"
