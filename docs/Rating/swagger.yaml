@@ -37,7 +37,7 @@ paths:
                   type: "string"
             example:
               collection_id: "216599"
-              post_id: 46161651
+              post_id: "46161651"
               user_id: 789816
               rating: {"Качество" : 5, "Цена" : 3, "Внешний вид" : 4}
               token: "ff48d4fv64d45df1v41db781t7g"
@@ -61,15 +61,13 @@ paths:
         description: "ID collection"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "postID"
         in: "path"
         description: "ID post"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "criterionName"
         in: "path"
         description: "Name of the criterion"
@@ -111,15 +109,13 @@ paths:
         description: "ID collection"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "postID"
         in: "path"
         description: "ID post"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "criterionName"
         in: "path"
         description: "Name of the criterion"
@@ -154,15 +150,13 @@ paths:
         description: "ID collection"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "postID"
         in: "path"
         description: "ID post"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       responses:
         200:
           description: "OK"
@@ -175,7 +169,7 @@ paths:
                     type: "integer"
                     format: "int64"
               example:
-                "post_rating" : 7
+                "average_rating" : 7
         404:
           description: "Error"
   
@@ -191,22 +185,19 @@ paths:
         description: "collection ID"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "postID"
         in: "path"
         description: "post ID"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "token"
         in: "path"
         description: "user token"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       responses:
         200:
           description: "OK"
@@ -228,15 +219,13 @@ paths:
         description: "post ID"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       - name: "token"
         in: "path"
         description: "user token"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       responses:
         200:
           description: "OK"
@@ -260,8 +249,7 @@ paths:
         schema:
           type: "array"
           items:
-            type: "integer"
-            format: "int64"
+            type: "string"
         example: 
           [11, 45, 99, 85]
       - name: "token"
@@ -269,8 +257,7 @@ paths:
         description: "user token"
         required: true
         schema:
-          type: "integer"
-          format: "int64"
+          type: "string"
       
       responses:
         200:
