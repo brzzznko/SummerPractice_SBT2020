@@ -18,6 +18,7 @@ import javax.print.Doc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Filters.eq;
@@ -29,11 +30,11 @@ public class CollectionsDataOperator {
 
     public CollectionsDataOperator(@Value("${mongodb.host}") String host,
                                    @Value("${mongodb.port}") int port,
-                                   @Value("${mongodb.databaseName}")  String databaseName,
-                                   @Value("${mongodb.collectionName}")  String collectionName) {
+                                   @Value("${mongodb.databaseName}") String databaseName,
+                                   @Value("${mongodb.collectionName}") String collectionName) {
 
         // Connection to MongoDb
-        MongoClient mongoClient = new MongoClient( host, port );
+        MongoClient mongoClient = new MongoClient(host, port);
         MongoDatabase database = mongoClient.getDatabase(databaseName);
         collection = database.getCollection(collectionName);
     }
@@ -47,6 +48,7 @@ public class CollectionsDataOperator {
 
     /**
      * Find collection by id
+     *
      * @param collectionId id of collection
      * @return found mongoDb entry without "_id" field
      */
@@ -62,6 +64,7 @@ public class CollectionsDataOperator {
 
     /**
      * Delete collection by ID
+     *
      * @param collectionId id of collection
      */
     public void deleteCollection(String collectionId) {
@@ -71,16 +74,16 @@ public class CollectionsDataOperator {
     /**
      * Get collection data by ID
      */
-    public Document getCollection(String idCollection){
+    public Document getCollection(String idCollection) {
         return collection.find(eq("collection_id", idCollection)).first();
     }
 
     /**
      * Getting a list of collections owned by a user
      */
-    public Document getListCollectionsUser(Integer idUser){
+    public Document getListCollectionsUser(Integer idUser) {
         ArrayList<String> listId = new ArrayList<>();
-        for (Document cur : collection.find(eq("owner_id", idUser))){
+        for (Document cur : collection.find(eq("owner_id", idUser))) {
             listId.add(cur.getString("collection_id"));
         }
         return new Document("collections", listId);
@@ -88,26 +91,35 @@ public class CollectionsDataOperator {
 
     /**
      * Edit data collection
-     * */
-    public void updateCollection(Document doc, String ID){
-        deleteCollection(ID);
-        insertJson(doc);
+     */
+    public boolean updateCollection(Document doc, String ID) {
+        Document previous = collection.find(eq("collection_id", ID)).first();
+
+        if (((ArrayList<Map<String, Integer>>) previous.get("criterion")).size() ==
+                ((ArrayList<Map<String, Integer>>) doc.get("criterion")).size()) {
+            collection.deleteOne(previous);
+            insertJson(doc);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * Adding a post to a collection
-     * */
+     */
     public void addPost(String idCollection, String idPost) {
         UpdateResult updateResult = collection.updateOne(
                 Filters.eq("collection_id", idCollection),
                 new BsonDocument("$push", new BsonDocument("posts", new BsonString(idPost)))
         );
     }
-    
+
     /**
      * Delete post from collection
+     *
      * @param collectionId id of collection
-     * @param postId id of post
+     * @param postId       id of post
      */
     public void deletePostFromCollection(String collectionId, String postId) {
         Bson updateOperation = pull("posts", postId);
@@ -116,6 +128,7 @@ public class CollectionsDataOperator {
 
     /**
      * Delete post from all collections
+     *
      * @param postId id of post to remove
      */
     public void deletePostFromAllCollection(String postId) {
@@ -125,6 +138,7 @@ public class CollectionsDataOperator {
 
     /**
      * Get posts in collection
+     *
      * @param collectionId id of collection
      * @return List of posts IDs
      */
@@ -132,7 +146,7 @@ public class CollectionsDataOperator {
         // Try to find collection
         Document found = collection.find(eq("collection_id", collectionId)).first();
         // If no collection, return null
-        if(found == null)
+        if (found == null)
             return null;
 
         // Return posts list
