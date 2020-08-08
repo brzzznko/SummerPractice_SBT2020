@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -105,12 +106,12 @@ public class ApiController {
         if (canCreateCollection && userId != null) {
             bodyRequest.append("owner_id", userId);
 
-            final String idCollection = java.util.UUID.randomUUID().toString(); //Generating an ID
+            final String idCollection = java.util.UUID.randomUUID().toString().replace("-", ""); //Generating an ID
             bodyRequest.append("collection_id", idCollection);
 
             try {
                 permissionValidator.setCollectionOwner(currentToken, idCollection);
-            } catch (URISyntaxException e) {
+            } catch (URISyntaxException | HttpClientErrorException.BadRequest e) {
                 e.printStackTrace();
             }
 
@@ -129,7 +130,8 @@ public class ApiController {
     @GetMapping("/{collectionID}/token/{token}")
     public ResponseEntity<Document> getCollectionData(@PathVariable("collectionID") String collectionID,
                                                       @PathVariable("token") String token) {
-        boolean canReadCollection = permissionValidator.havePermission(collectionID, token, "read");
+        boolean canReadCollection = permissionValidator.havePermission(collectionID, token, "read") ||
+                permissionValidator.isPublicCollection(collectionID);
 
         if (canReadCollection) {
             Document doc = collectionsDataOperator.getCollection(collectionID);
@@ -175,7 +177,7 @@ public class ApiController {
         String token = bodyRequest.getString("token");
         bodyRequest.remove("token");
 
-        boolean canUpdateCollectionData = permissionValidator.havePermission(id, token, "edit");
+        boolean canUpdateCollectionData = permissionValidator.havePermission(id, token, "write");
 
         if (canUpdateCollectionData) {
             if (collectionsDataOperator.updateCollection(bodyRequest, id)) {

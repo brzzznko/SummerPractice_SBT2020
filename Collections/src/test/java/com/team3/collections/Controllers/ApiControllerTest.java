@@ -59,6 +59,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Successfully deleting a collection")
     public void deleteCollection() throws URISyntaxException {
         //Http request
@@ -71,6 +72,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Not enough rights to delete collection")
     public void notRightsToDeleteCollection() throws URISyntaxException {
         // Uri for request
@@ -83,6 +85,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Successfully deleting post from collection")
     public void deletePostFromCollection() throws URISyntaxException {
         //Http request
@@ -96,6 +99,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Not enough rights to delete post from collection")
     public void notRightsToDeletePostFromCollection() throws URISyntaxException {
         // Uri for request
@@ -109,6 +113,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Successfully deleting post from ALL collection")
     void deletePostFromAllCollection() throws URISyntaxException {
         //Http request
@@ -121,6 +126,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Not enough rights to delete post from ALL collection")
     void notRightstoDeletePostFromAllCollection() throws URISyntaxException {
         // Uri for request
@@ -133,6 +139,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Get posts of collection. OK")
     void getPosts() throws URISyntaxException {
         // Uri for request
@@ -146,6 +153,7 @@ public class ApiControllerTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Get posts of collection. Not Found (no collection)")
     void getPostsNoCollection() throws URISyntaxException {
         // Uri for request
