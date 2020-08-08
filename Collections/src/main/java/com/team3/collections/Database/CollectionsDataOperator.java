@@ -95,6 +95,9 @@ public class CollectionsDataOperator {
     public boolean updateCollection(Document doc, String ID) {
         Document previous = collection.find(eq("collection_id", ID)).first();
 
+        if (previous == null)
+            return false;
+
         if (((ArrayList<Map<String, Integer>>) previous.get("criterion")).size() ==
                 ((ArrayList<Map<String, Integer>>) doc.get("criterion")).size()) {
             collection.deleteOne(previous);

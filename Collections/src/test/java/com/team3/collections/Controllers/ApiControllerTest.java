@@ -1,6 +1,7 @@
 package com.team3.collections.Controllers;
 
 import com.team3.collections.Database.CollectionsDataOperator;
+import com.team3.collections.Model.PermissionValidator;
 import org.bson.Document;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,24 @@ public class ApiControllerTest {
 
     private static final String TEST_COLLECTION_ID = "1";
     private static final String DELETING_TEST_POST_ID = "33";
-    private static final String GOOD_TOKEN = "1";
-    private static final String BAD_TOKEN = "very_bad";
+    private static String GOOD_TOKEN;
+    private static final String BAD_TOKEN = "not_exist";
 
     @Value("${server.port}")
     private String PORT;
 
+
+    @BeforeAll
+    public static void createUser() throws URISyntaxException {
+        PermissionValidator permissionValidator = new PermissionValidator();
+        GOOD_TOKEN = permissionValidator.register("test", "test", "test");
+    }
+
+    @AfterAll
+    public static void deleteUser() throws URISyntaxException {
+        PermissionValidator permissionValidator = new PermissionValidator();
+        permissionValidator.deleteUser(GOOD_TOKEN);
+    }
 
     @BeforeEach
     public void fillDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
