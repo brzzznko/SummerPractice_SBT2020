@@ -17,6 +17,8 @@ public class ApiController {
     @Autowired
     CollectionsDataOperator collectionsDataOperator;
 
+
+
     /**
      * Delete collection by ID, if you have sufficient rights.
      *
