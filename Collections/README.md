@@ -10,24 +10,24 @@ It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase
 * Download "collections-version.jar" and "collection_app.properties" files from releases.
 * Open config file "collection_app.properties" and set your properties.
     * Server properties:
-```java
-    server.port=8081
-    server.host=localhost
-```
+         ```java
+             server.port=8081
+             server.host=localhost
+         ```
     * MongoDB properties.
-```java
-    mongodb.host=localhost
-    mongodb.port=27017
-```
+      ```java
+          mongodb.host=localhost
+          mongodb.port=27017
+      ```
     * Gateway service properties.
-```java
-    gateway.host=http://localhost
-    gateway.port=8085
-```
+      ```java
+          gateway.host=http://localhost
+          gateway.port=8085
+      ```
 * Launch app:
-```bash
-    java -jar collections-0.0.1-SNAPSHOT.jar --spring.config.location=./collections_app.properties
-```
+   ```bash
+       java -jar collections-0.0.1-SNAPSHOT.jar --spring.config.location=./collections_app.properties
+   ```
 
 ## Buld guide
 ```bash
