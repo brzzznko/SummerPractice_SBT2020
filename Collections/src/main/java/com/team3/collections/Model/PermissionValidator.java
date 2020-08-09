@@ -2,6 +2,7 @@ package com.team3.collections.Model;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,21 +18,13 @@ import java.util.List;
 
 @Component
 public class PermissionValidator {
-    private String host = "localhost";
-    private String port = "5000";
-
-    private final String HTTP = "http://";
+    @Value("${gateway.host}")
+    private String host;
+    @Value("${gateway.port}")
+    private String port;
 
     @Autowired
     private RestTemplate restTemplate;
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public void setPort(String port) {
-        this.port = port;
-    }
 
     /**
      * Get user id by token
@@ -40,7 +33,7 @@ public class PermissionValidator {
      * @return user id
      */
     public Integer getUserId(String token) {
-        String url = HTTP + host + ":" + port + "/user/info/" + token;
+        String url = host + ":" + port + "/user/info/" + token;
 
         ResponseEntity<Document> result = restTemplate.exchange(url, HttpMethod.GET, null, Document.class);
 
@@ -61,7 +54,7 @@ public class PermissionValidator {
      * @throws URISyntaxException exception by bad uri
      */
     public Integer getUserRoleInCollection(String collectionId, Integer userId) throws URISyntaxException {
-        String url = HTTP + host + ":" + port + "/permissions/userRole/" + userId;
+        String url = host + ":" + port + "/permissions/userRole/" + userId;
         URI uri = new URI(url);
 
         ResponseEntity<Document[]> result = restTemplate.getForEntity(uri, Document[].class);
@@ -100,7 +93,7 @@ public class PermissionValidator {
                 return false;
             }
 
-            String url = HTTP + host + ":" + port + "/permissions/role/" + roleInCollection;
+            String url = host + ":" + port + "/permissions/role/" + roleInCollection;
             URI uri = new URI(url);
 
             ResponseEntity<String[]> result = restTemplate.getForEntity(uri, String[].class);
@@ -133,7 +126,7 @@ public class PermissionValidator {
      */
     public boolean isPostOwner(String token, String postId) {
         try {
-            String url = HTTP + host + ":" + port + "/permissions/getPostOwner/" + postId;
+            String url = host + ":" + port + "/permissions/getPostOwner/" + postId;
             URI uri = new URI(url);
 
             ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
@@ -164,7 +157,7 @@ public class PermissionValidator {
      * @throws URISyntaxException exception thrown to indicate that a string could not be parsed as a URI reference.
      */
     public void setCollectionOwner(String token, String collectionId) throws URISyntaxException {
-        String url = HTTP + host + ":" + port + "/permissions/userRole/setCollectionOwner";
+        String url = host + ":" + port + "/permissions/userRole/setCollectionOwner";
         URI uri= new URI(url);
 
         Document requestBody = new Document("token", token).append("collection_id", collectionId);
@@ -203,7 +196,7 @@ public class PermissionValidator {
             }
         }
 
-        String url = HTTP + host + ":" + port + "/permissions/getPublicCollection";
+        String url = host + ":" + port + "/permissions/getPublicCollection";
         URI uri= new URI(url);
 
         ResponseEntity<String[]> result = restTemplate.postForEntity(uri, allUserCollections, String[].class);
@@ -227,7 +220,7 @@ public class PermissionValidator {
      * @throws URISyntaxException
      */
     public String register(String login, String password, String name) throws URISyntaxException {
-        String url = HTTP + host + ":" + port + "/user";
+        String url = host + ":" + port + "/user";
         URI uri= new URI(url);
 
         Document requestBody = new Document("login", login).append("password", password).append("name", name);
@@ -249,7 +242,7 @@ public class PermissionValidator {
      * @throws URISyntaxException
      */
     public void deleteUser(String token) throws URISyntaxException {
-        String url = HTTP + host + ":" + port + "/user/delete/" + token;
+        String url = host + ":" + port + "/user/delete/" + token;
         URI uri= new URI(url);
 
         ResponseEntity<String> result = restTemplate.exchange(uri, HttpMethod.DELETE, null, String.class);
@@ -263,7 +256,7 @@ public class PermissionValidator {
      * @return return true if collection is public
      */
     public boolean isPublicCollection(String collectionID) {
-        String url = HTTP + host + ":" + port + "/permissions/getPublicCollection";
+        String url = host + ":" + port + "/permissions/getPublicCollection";
 
         List<String> requestBody = Collections.singletonList(collectionID);
 

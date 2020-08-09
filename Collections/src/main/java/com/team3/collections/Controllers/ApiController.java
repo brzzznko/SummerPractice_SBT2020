@@ -29,7 +29,7 @@ public class ApiController {
      * @param token        access token of user session
      * @return HttpStatus with message
      */
-    @DeleteMapping("/{collectionID}/token/{token}")
+    @DeleteMapping("/{collectionID}/token/{token}/")
     public ResponseEntity<String> deleteCollection(@PathVariable("collectionID") String collectionId,
                                                    @PathVariable("token") String token) {
         try {
@@ -58,7 +58,7 @@ public class ApiController {
      * @param token        access token of user session
      * @return HttpStatus with message
      */
-    @DeleteMapping("/{collectionID}/post/{postID}/token/{token}")
+    @DeleteMapping("/{collectionID}/post/{postID}/token/{token}/")
     public ResponseEntity<String> deletePostFromCollection(@PathVariable("collectionID") String collectionId,
                                                            @PathVariable("postID") String postId,
                                                            @PathVariable("token") String token) {
@@ -80,7 +80,7 @@ public class ApiController {
         }
     }
 
-    @DeleteMapping("/post/{postID}/token/{token}")
+    @DeleteMapping("/post/{postID}/token/{token}/")
     public ResponseEntity<String> deletePostFromAllCollection(@PathVariable("postID") String postId,
                                                               @PathVariable("token") String token) {
         try {
@@ -100,7 +100,7 @@ public class ApiController {
         }
     }
 
-    @GetMapping("/{collectionID}/posts")
+    @GetMapping("/{collectionID}/posts/")
     public ResponseEntity<Document> getPosts(@PathVariable("collectionID") String collectionId) {
         try {
             List<String> posts = collectionsDataOperator.getPosts(collectionId);
@@ -156,7 +156,7 @@ public class ApiController {
 
     }
 
-    @GetMapping("/{collectionID}/token/{token}")
+    @GetMapping("/{collectionID}/token/{token}/")
     public ResponseEntity<Document> getCollectionData(@PathVariable("collectionID") String collectionID,
                                                       @PathVariable("token") String token) {
         try {
@@ -180,7 +180,7 @@ public class ApiController {
         }
     }
 
-    @GetMapping("/users/{userID}/token/{token}")
+    @GetMapping("/users/{userID}/token/{token}/")
     public ResponseEntity<Document> getCollectionsUser(@PathVariable("userID") Integer userID,
                                                        @PathVariable("token") String token) {
         try {
@@ -231,7 +231,7 @@ public class ApiController {
         }
     }
 
-    @PutMapping("/posts")
+    @PutMapping("/posts/")
     public ResponseEntity<String> addPostToCollection(@RequestBody Document bodyRequest) {
         try {
 
@@ -258,7 +258,7 @@ public class ApiController {
         }
     }
 
-    @DeleteMapping("/posts/token/{token}")
+    @DeleteMapping("/posts/token/{token}/")
     public ResponseEntity<String> deleteListPostsFromCollections(@RequestParam("postsList") List<String> postsList,
                                                                  @PathVariable("token") String token) {
         try {

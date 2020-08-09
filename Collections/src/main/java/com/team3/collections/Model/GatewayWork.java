@@ -2,6 +2,7 @@ package com.team3.collections.Model;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -20,9 +20,19 @@ import java.util.*;
 @Component
 @Scope("prototype")
 public class GatewayWork extends Thread {
-    private String host = "localhost";  //Host service Gateway
-    private String port = "8085";       //Port service Gateway
-    private final String HTTP = "http://";
+    @Value("${gateway.host}")
+    private String gatewayHost;  //Host service Gateway
+    @Value("${gateway.port}")
+    private String gatewayPort;       //Port service Gateway
+    @Value("${server.host}")
+    private String host;
+    @Value("${server.port}")
+    private String port;
+    @Value("${service.name}")
+    private String serviceName;
+    @Value("${service.version}")
+    private String serviceVersion;
+
 
     private String instanceId;
     private int pingInterval;
@@ -57,7 +67,7 @@ public class GatewayWork extends Thread {
     }
 
     public void ping() throws InterruptedException {
-        String url = HTTP + host + ":" + port + "/gateway/ping/" + instanceId;
+        String url = gatewayHost + ":" + gatewayPort + "/gateway/ping/" + instanceId;
 
         while (true) {
             ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
@@ -72,7 +82,7 @@ public class GatewayWork extends Thread {
 
     public void registration() throws UnsupportedEncodingException, ClassNotFoundException {
         //Creating a request address
-        String url = HTTP + host + ":" + port + "/gateway/publish";
+        String url = gatewayHost + ":" + gatewayPort + "/gateway/publish";
         URI uri = null;
         try {
             uri = new URI(url);
@@ -94,7 +104,7 @@ public class GatewayWork extends Thread {
     }
 
     public void ready() {
-        String url = HTTP + host + ":" + port + "/gateway/ready/" + instanceId;
+        String url = gatewayHost + ":" + gatewayPort + "/gateway/ready/" + instanceId;
 
         ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
     }
@@ -144,20 +154,18 @@ public class GatewayWork extends Thread {
 
     public Document readConfigService() {
             Document requestBody = new Document();
-            requestBody.append("address", "http://localhost");
-            requestBody.append("port", "8081");
-            requestBody.append("name_service", "CONTENT MANAGEMENT");
-            requestBody.append("version_service", "0.1.0beta");
+            requestBody.append("address", gatewayHost);
+            requestBody.append("port", port);
+            requestBody.append("name_service", serviceName);
+            requestBody.append("version_service", serviceVersion);
             return requestBody;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setGatewayHost(String gatewayHost) {
+        this.gatewayHost = gatewayHost;
     }
 
-    public void setPort(String port) {
-        this.port = port;
+    public void setGatewayPort(String gatewayPort) {
+        this.gatewayPort = gatewayPort;
     }
-
-
 }
