@@ -22,7 +22,7 @@ You can change app properties in \Collections\src\main\resources\application.pro
     server.port=8081
     server.host=localhost
 ```
-* MOngoDB properties.
+* MongoDB properties.
 ```java
     mongodb.host=localhost
     mongodb.port=27017
