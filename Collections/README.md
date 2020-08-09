@@ -5,7 +5,8 @@ Microservice is responsible for operations with collections: creating, storing, 
 https://borzzzenko.github.io/SummerPractice_SBT2020/Collections/index.html
 
 ## Installation
-It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11, [maven](https://maven.apache.org/install.html), [MongoDB](https://www.mongodb.com/try/download/community)
+It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11, [maven](https://maven.apache.org/install.html), [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
+
 ```bash
     git clone https://github.com/BorZzzenko/SummerPractice_SBT2020.git
     cd SummerPractice_SBT2020
@@ -14,12 +15,20 @@ It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase
     cd target
     java -jar collections-0.0.1-SNAPSHOT.jar
 ```
-If you need to run app with specific port. You can change it in \Collections\src\main\resources\application.properties. Just change field server.port:
+You can change app properties in \Collections\src\main\resources\application.properties
+
+* Server properties:
 ```java
     server.port=8081
+    server.host=localhost
 ```
-You also can change MongoDB host IP and port in \Collections\src\main\resources\application.properties.
+* MongoDB properties.
 ```java
     mongodb.host=localhost
     mongodb.port=27017
+```
+* Gateway service properties.
+```java
+    gateway.host=http://localhost
+    gateway.port=8085
 ```
