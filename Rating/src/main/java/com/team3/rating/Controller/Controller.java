@@ -45,7 +45,7 @@ public class Controller {
     }
 
 
-    @GetMapping("collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}")
+    @GetMapping("collections/{collectionID}/posts/{postID}/users/{userID}/criterion/{criterionName}/")
     public ResponseEntity<Integer> getRatingByCriterion(@PathVariable String collectionID,
                                     @PathVariable String postID,
                                     @PathVariable String userID,
@@ -115,7 +115,7 @@ public class Controller {
      * @param postId id of posts that we want to remove rating
      * @return http status code
      */
-    @DeleteMapping("collections/posts/{postID}/token/{token}")
+    @DeleteMapping("collections/posts/{postID}/token/{token}/")
     public ResponseEntity<String> deleteAllPostRatings(@PathVariable("token") String token,
                                                        @PathVariable("postID") String postId) {
         try {
@@ -145,7 +145,7 @@ public class Controller {
      * @param token user access token
      * @return http status code
      */
-    @DeleteMapping("collections/posts/token/{token}")
+    @DeleteMapping("collections/posts/token/{token}/")
     public ResponseEntity<String> deleteAllpostsRatings(@RequestParam("postsList") List<String> postsList,
                                                         @PathVariable("token") String token) {
         try {
@@ -177,7 +177,7 @@ public class Controller {
      * @param postId post id
      * @return json that contain average rating
      */
-    @GetMapping("/average/collections/{collectionID}/posts/{postID}")
+    @GetMapping("/average/collections/{collectionID}/posts/{postID}/")
     public ResponseEntity<Document> getAveragePostRating(@PathVariable("collectionID") String collectionId,
                                                          @PathVariable("postID") String postId){
       
@@ -198,7 +198,7 @@ public class Controller {
      * @param token user access token
      * @return Http Status code
      */
-    @DeleteMapping("/collections/{collectionID}/posts/{postID}/token/{token}")
+    @DeleteMapping("/collections/{collectionID}/posts/{postID}/token/{token}/")
     public ResponseEntity<String> deletePostRatings(@PathVariable("collectionID") String collectionId,
                                                     @PathVariable("postID") String postId,
                                                     @PathVariable("token") String token) {
@@ -222,7 +222,7 @@ public class Controller {
         }
     }
 
-    @GetMapping("/average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}")
+    @GetMapping("/average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}/")
     public ResponseEntity<Document> getAveragePostRatingByCriterion(@PathVariable("collectionID") String collectionId,
                                                                     @PathVariable("postID") String postId,
                                                                     @PathVariable("criterionName") String criterionName){
