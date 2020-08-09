@@ -2,14 +2,16 @@ package com.team3.rating.Controller;
 
 import com.mongodb.client.MongoCursor;
 import com.team3.rating.Database.RatingDataOperator;
+import com.team3.rating.Model.PermissionValidator;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.Doc;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("rating")
@@ -17,11 +19,18 @@ public class Controller {
     @Autowired
     private RatingDataOperator ratingDataOperator;
 
+    @Autowired
+    private PermissionValidator permissionValidator;
+
     @PostMapping("/")
     public ResponseEntity<String> ratePost(@RequestBody Document requestBody) {
         try {
             String currentToken = requestBody.getString("token");
-            if (true) {
+            String collectionId = requestBody.getString("colection_id");
+
+            boolean canRate = permissionValidator.havePermission(collectionId, currentToken, "rate");
+
+            if (canRate) {
                 requestBody.remove("token");
                 ratingDataOperator.createRating(requestBody);
                 calculateAverageRating(requestBody.toJson());
@@ -29,6 +38,7 @@ public class Controller {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>("OK", HttpStatus.OK);
@@ -100,6 +110,7 @@ public class Controller {
 
     /**
      * * Delete all post ratings and all post average rating
+     *
      * @param token user access token
      * @param postId id of posts that we want to remove rating
      * @return http status code
@@ -107,19 +118,29 @@ public class Controller {
     @DeleteMapping("collections/posts/{postID}/token/{token}")
     public ResponseEntity<String> deleteAllPostRatings(@PathVariable("token") String token,
                                                        @PathVariable("postID") String postId) {
-        boolean canDeleteAllPostRatings = token.equals("1");
-        if (canDeleteAllPostRatings) {
-            ratingDataOperator.deletePostRatings(postId);
-            ratingDataOperator.deletePostAverageRatings(postId);
+        try {
+            boolean canDeleteAllPostRatings = permissionValidator.isPostOwner(token, postId);
+
+            if (canDeleteAllPostRatings) {
+                ratingDataOperator.deletePostRatings(postId);
+                ratingDataOperator.deletePostAverageRatings(postId);
+            }
+            else {
+                return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
+            }
+
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Something went wrong", HttpStatus.NOT_FOUND);
         }
-        else {
-            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
-        }
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+
     }
 
     /**
      * Delete all post ratings and all post average rating
+     *
      * @param postsList list of posts that we want to remove rating
      * @param token user access token
      * @return http status code
@@ -127,19 +148,31 @@ public class Controller {
     @DeleteMapping("collections/posts/token/{token}")
     public ResponseEntity<String> deleteAllpostsRatings(@RequestParam("postsList") List<String> postsList,
                                                         @PathVariable("token") String token) {
-        for(String post : postsList) {
-            boolean canDeleteAllPostsAllRatings = token.equals("1");
-            if (canDeleteAllPostsAllRatings) {
-                ratingDataOperator.deletePostRatings(post);
-                ratingDataOperator.deletePostAverageRatings(post);
-            }
-        }
+        try {
+            StringBuilder response = new StringBuilder();
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+            for (String post : postsList) {
+                boolean canDeleteAllPostsRatings = permissionValidator.isPostOwner(token, post);
+
+                if (canDeleteAllPostsRatings) {
+                    ratingDataOperator.deletePostRatings(post);
+                    ratingDataOperator.deletePostAverageRatings(post);
+                }
+                else
+                    response.append("/nCan't delete post: ").append(post);
+            }
+
+            return new ResponseEntity<>("OK" + response, HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Something went wrong", HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
      * Get post average rating
+     *
      * @param collectionId id collection in which the post
      * @param postId post id
      * @return json that contain average rating
@@ -159,6 +192,7 @@ public class Controller {
 
     /**
      * Delete all specific post ratings from specific collection
+     *
      * @param collectionId id of collection
      * @param postId id of post
      * @param token user access token
@@ -169,17 +203,23 @@ public class Controller {
                                                     @PathVariable("postID") String postId,
                                                     @PathVariable("token") String token) {
 
-        // !!! Need to do check with auth service
-        boolean canDeleteRating = token.equals("1");
+        try {
+            boolean canDeleteRating = permissionValidator.isPostOwner(token, postId) ||
+                    permissionValidator.havePermission(collectionId, token, "delete_post");
 
-        if (canDeleteRating) {
-            ratingDataOperator.deletePostRatingsFromCollection(collectionId, postId);
-        }
-        else {
-            return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
-        }
+            if (canDeleteRating) {
+                ratingDataOperator.deletePostRatingsFromCollection(collectionId, postId);
+            }
+            else {
+                return new ResponseEntity<>("Not enough rights", HttpStatus.UNAUTHORIZED);
+            }
 
-        return new ResponseEntity<>("OK", HttpStatus.OK);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Something went wrong", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/average/collections/{collectionID}/posts/{postID}/criterion/{criterionName}")
