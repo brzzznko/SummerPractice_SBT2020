@@ -1,4 +1,4 @@
-package com.team3.collections.Model;
+package com.team3.rating.Model;
 
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,26 +10,33 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.*;
+import java.io.UnsupportedEncodingException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @Scope("prototype")
 public class GatewayWork extends Thread {
     @Value("${gateway.host}")
     private String gatewayHost;  //Host service Gateway
+
     @Value("${gateway.port}")
     private String gatewayPort;       //Port service Gateway
+
     @Value("${server.host}")
     private String host;
+
     @Value("${server.port}")
     private String port;
+
     @Value("${service.name}")
     private String serviceName;
+
     @Value("${service.version}")
     private String serviceVersion;
 
@@ -112,7 +119,7 @@ public class GatewayWork extends Thread {
     public ArrayList<Document> getNameApiFunctions() throws ClassNotFoundException {
             ArrayList<Document> arrayList = new ArrayList<>();
 
-            Class clazz = Class.forName("com.team3.collections.Controllers.ApiController");
+            Class clazz = Class.forName("com.team3.rating.Controller.Controller");
 
             String rm = "";
             for(Annotation an : clazz.getAnnotations()){
