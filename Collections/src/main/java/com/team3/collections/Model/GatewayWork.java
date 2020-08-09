@@ -6,21 +6,22 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Properties;
+import java.util.*;
 
 @Component
 @Scope("prototype")
 public class GatewayWork extends Thread {
     private String host = "localhost";  //Host service Gateway
-    private String port = "8083";       //Port service Gateway
+    private String port = "8085";       //Port service Gateway
     private final String HTTP = "http://";
 
     private String instanceId;
@@ -38,6 +39,12 @@ public class GatewayWork extends Thread {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                ready();
+            } catch (HttpServerErrorException e) {
                 e.printStackTrace();
             }
 
@@ -82,8 +89,14 @@ public class GatewayWork extends Thread {
         //Registering the service
         ResponseEntity<Document> result = restTemplate.postForEntity(uri, requestBody, Document.class);
         instanceId = result.getBody().getString("instance_id");
-        pingInterval = (int) result.getBody().getInteger("ping_iterval");
+        pingInterval = (int) result.getBody().getInteger("ping_interval");
 
+    }
+
+    public void ready() {
+        String url = HTTP + host + ":" + port + "/gateway/ready/" + instanceId;
+
+        ResponseEntity<String> result = restTemplate.getForEntity(url, String.class);
     }
 
     public ArrayList<Document> getNameApiFunctions() throws ClassNotFoundException {
@@ -122,12 +135,16 @@ public class GatewayWork extends Thread {
                 }
             }
 
-            return arrayList;
+            Set<Document> foo = new HashSet<Document>(arrayList);
+            ArrayList<Document> mainList = new ArrayList<Document>();
+            mainList.addAll(foo);
+
+            return mainList;
     }
 
     public Document readConfigService() {
             Document requestBody = new Document();
-            requestBody.append("address", "192.168.1.50");
+            requestBody.append("address", "http://localhost");
             requestBody.append("port", "8081");
             requestBody.append("name_service", "CONTENT MANAGEMENT");
             requestBody.append("version_service", "0.1.0beta");
