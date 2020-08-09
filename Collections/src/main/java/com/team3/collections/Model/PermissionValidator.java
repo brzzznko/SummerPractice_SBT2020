@@ -136,10 +136,11 @@ public class PermissionValidator {
             String url = HTTP + host + ":" + port + "/permissions/getPostOwner/" + postId;
             URI uri = new URI(url);
 
-            ResponseEntity<Integer> result = restTemplate.getForEntity(uri, Integer.class);
+            ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
 
             if (result.getStatusCode().equals(HttpStatus.OK)) {
-                Integer postOwner = result.getBody();
+                String resultBody = result.getBody();
+                Integer postOwner = Integer.parseInt(resultBody);
                 Integer userId = getUserId(token);
                 return postOwner.equals(userId);
             }
@@ -242,6 +243,7 @@ public class PermissionValidator {
 
     /**
      * Delete current user account
+     * method for tests
      *
      * @param token current user access token
      * @throws URISyntaxException
