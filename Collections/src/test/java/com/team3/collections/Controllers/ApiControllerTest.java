@@ -30,33 +30,33 @@ public class ApiControllerTest {
     private String PORT;
 
 
-    @BeforeAll
-    public static void createUser() throws URISyntaxException {
-        PermissionValidator permissionValidator = new PermissionValidator();
-        GOOD_TOKEN = permissionValidator.register("test", "test", "test");
-    }
-
-    @AfterAll
-    public static void deleteUser() throws URISyntaxException {
-        PermissionValidator permissionValidator = new PermissionValidator();
-        permissionValidator.deleteUser(GOOD_TOKEN);
-    }
-
-    @BeforeEach
-    public void fillDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
-        collectionsDataOperator.insertJson(new Document("collection_id", TEST_COLLECTION_ID)
-                .append("owner_id", 2)
-                .append("name", "Яблоки")
-                .append("description", "Сравнение")
-                .append("posts", Arrays.asList("66", "78880", DELETING_TEST_POST_ID, "88"))
-                .append("criterion", Arrays.asList("Вкус", "Цена"))
-        );
-    }
-
-    @AfterEach
-    public void clearDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
-        collectionsDataOperator.deleteCollection(TEST_COLLECTION_ID);
-    }
+//    @BeforeAll
+//    public static void createUser() throws URISyntaxException {
+//        PermissionValidator permissionValidator = new PermissionValidator();
+//        GOOD_TOKEN = permissionValidator.register("test", "test", "test");
+//    }
+//
+//    @AfterAll
+//    public static void deleteUser() throws URISyntaxException {
+//        PermissionValidator permissionValidator = new PermissionValidator();
+//        permissionValidator.deleteUser(GOOD_TOKEN);
+//    }
+//
+//    @BeforeEach
+//    public void fillDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
+//        collectionsDataOperator.insertJson(new Document("collection_id", TEST_COLLECTION_ID)
+//                .append("owner_id", 2)
+//                .append("name", "Яблоки")
+//                .append("description", "Сравнение")
+//                .append("posts", Arrays.asList("66", "78880", DELETING_TEST_POST_ID, "88"))
+//                .append("criterion", Arrays.asList("Вкус", "Цена"))
+//        );
+//    }
+//
+//    @AfterEach
+//    public void clearDatabase(@Autowired CollectionsDataOperator collectionsDataOperator) {
+//        collectionsDataOperator.deleteCollection(TEST_COLLECTION_ID);
+//    }
 
     @Test
     @Disabled

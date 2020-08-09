@@ -1,7 +1,6 @@
 package com.team3.collections.Database;
 
 import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
@@ -13,14 +12,9 @@ import org.bson.conversions.Bson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-
-import javax.print.Doc;
-
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import static com.mongodb.client.model.Filters.*;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.pull;
 

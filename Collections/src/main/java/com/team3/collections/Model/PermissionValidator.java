@@ -193,7 +193,7 @@ public class PermissionValidator {
      */
     public List<String> collectionFilter(List<String> allUserCollections, String token) throws URISyntaxException {
         List<String> allCollectionsCopy = new ArrayList<>(allUserCollections);
-        List<String> available = new ArrayList<>(allUserCollections);
+        List<String> available = new ArrayList<>();
 
         for (String collection : allCollectionsCopy) {
             if (havePermission(collection, token, "read")) {
@@ -202,13 +202,10 @@ public class PermissionValidator {
             }
         }
 
-        /*
-            Problems here
-        */
         String url = HTTP + host + ":" + port + "/permissions/getPublicCollection";
         URI uri= new URI(url);
 
-        ResponseEntity<String[]> result = restTemplate.postForEntity(uri, allUserCollections.toString(), String[].class);
+        ResponseEntity<String[]> result = restTemplate.postForEntity(uri, allUserCollections, String[].class);
 
         if (result.getStatusCode().equals(HttpStatus.OK)) {
             available.addAll(Arrays.asList(result.getBody()));
