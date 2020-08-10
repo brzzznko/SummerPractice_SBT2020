@@ -29,7 +29,7 @@ It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase
        java -jar collections-0.0.1-SNAPSHOT.jar --spring.config.location=./collections_app.properties
    ```
 
-## Buld guide
+## Build guide
 ```bash
     git clone https://github.com/BorZzzenko/SummerPractice_SBT2020.git
     cd SummerPractice_SBT2020
