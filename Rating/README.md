@@ -5,7 +5,7 @@ Microservice is responsible for the operations with the rating: its creation, st
 https://borzzzenko.github.io/SummerPractice_SBT2020/Rating/index.html
 
 ## Installation
-It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11, [maven](https://maven.apache.org/install.html), [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
+It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11 and [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
 
 * Download "rating-version.jar" and "rating_app.properties" files from [releases](https://github.com/BorZzzenko/SummerPractice_SBT2020/releases).
 * Open config file "rating_app.properties" and set your properties.
