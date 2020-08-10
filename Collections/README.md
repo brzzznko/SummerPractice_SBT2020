@@ -5,7 +5,7 @@ Microservice is responsible for operations with collections: creating, storing, 
 https://borzzzenko.github.io/SummerPractice_SBT2020/Collections/index.html
 
 ## Installation
-It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11, [maven](https://maven.apache.org/install.html), [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
+It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11 and [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
 
 * Download "collections-version.jar" and "collection_app.properties" files from [releases](https://github.com/BorZzzenko/SummerPractice_SBT2020/releases).
 * Open config file "collection_app.properties" and set your properties.
