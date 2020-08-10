@@ -6,7 +6,7 @@
 ![language_count](https://img.shields.io/github/languages/top/BorZzzenko/SummerPractice_SBT2020?logoColor=red&style=flat-square)
 
 
-We write an application using a microservice architecture. Our microservices: Collections microservice and rating microservice.
+We write an application using a microservice architecture. Our microservices: Collections and Rating.
 
 ### Collections Microservice
 [SummerPractice_SBT2020/Collections](https://github.com/BorZzzenko/SummerPractice_SBT2020/tree/master/Collections)
@@ -14,3 +14,10 @@ We write an application using a microservice architecture. Our microservices: Co
 
 ### Rating Microservice
 [SummerPractice_SBT2020/Rating](https://github.com/BorZzzenko/SummerPractice_SBT2020/tree/master/Rating)
+
+### Other microservices:
+* [API Gateway + Service Discovery](https://github.com/lenivoe/summer-2020-SBT-team1)
+
+* [Content and Metadata management](https://github.com/ASurtaev/SummerSberPractice)
+
+* [Auth/Validation and user permissions](https://github.com/D076/summer-practice-2020-SBT)
