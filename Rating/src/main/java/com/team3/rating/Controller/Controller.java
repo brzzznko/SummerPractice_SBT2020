@@ -26,7 +26,7 @@ public class Controller {
     public ResponseEntity<String> ratePost(@RequestBody Document requestBody) {
         try {
             String currentToken = requestBody.getString("token");
-            String collectionId = requestBody.getString("colection_id");
+            String collectionId = requestBody.getString("collection_id");
 
             boolean canRate = permissionValidator.havePermission(collectionId, currentToken, "rate");
 

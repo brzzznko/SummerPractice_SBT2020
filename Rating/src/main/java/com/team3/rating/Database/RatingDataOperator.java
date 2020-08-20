@@ -105,8 +105,8 @@ public class RatingDataOperator {
      */
     public void createAverageRating(Document doc) {
 
-        Integer collectionId = doc.getInteger("collection_id");
-        Integer postId = doc.getInteger("post_id");
+        String collectionId = doc.getString("collection_id");
+        String postId = doc.getString("post_id");
 
         Bson updateOperation = combine(set("average_rating_by_criterion", doc.get("average_rating_by_criterion")),
                 set("average_rating", doc.get("average_rating")));
