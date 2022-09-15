@@ -2,7 +2,7 @@
 Microservice is responsible for the operations with the rating: its creation, storage, updating, calculation of the average post ratings of the total and by criteria.
 
 ## API Documentation
-https://borzzzenko.github.io/SummerPractice_SBT2020/Rating/index.html
+https://brzzznko.github.io/SummerPractice_SBT2020/Rating/index.html
 
 ## Installation
 It is necessary to install [JDK](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) version 8 or 11 and [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
